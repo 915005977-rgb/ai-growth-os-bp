@@ -1,0 +1,2063 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Personal Growth OS 投资人版 BP</title>
+  <meta name="description" content="AI Personal Growth OS 是面向高认知个体、一人公司、创作者、销售/咨询/BD 型从业者的个人成长与商业机会操作系统。">
+  <style>
+    :root {
+      --ink: #171717;
+      --muted: #6d6a63;
+      --paper: #f7f3ea;
+      --panel: #fffaf0;
+      --line: #d9d0bf;
+      --olive: #56624a;
+      --brick: #b84a2e;
+      --blue: #315c84;
+      --gold: #b7832f;
+      --green: #2f6b52;
+      --shadow: 0 22px 70px rgba(43, 36, 24, 0.12);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px) 0 0 / 54px 54px,
+        linear-gradient(0deg, rgba(23, 23, 23, 0.028) 1px, transparent 1px) 0 0 / 54px 54px,
+        var(--paper);
+      font-family: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.78;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(86, 98, 74, 0.18);
+      background: rgba(247, 243, 234, 0.88);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 64px;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--olive);
+    }
+
+    .mark {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--ink);
+      background:
+        linear-gradient(135deg, transparent 46%, var(--brick) 47% 56%, transparent 57%),
+        linear-gradient(45deg, var(--gold), var(--gold));
+      box-shadow: 4px 4px 0 var(--ink);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav a {
+      padding: 8px 0;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav a:hover {
+      color: var(--ink);
+      border-bottom-color: var(--brick);
+    }
+
+    .nav a.active {
+      color: var(--ink);
+      border-bottom-color: var(--brick);
+    }
+
+    .read-progress {
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--brick), var(--gold), var(--green));
+      transition: width 120ms linear;
+    }
+
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      align-items: center;
+      padding: 70px 0 52px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.06fr) minmax(340px, 0.94fr);
+      gap: 46px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      color: var(--brick);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      background: var(--brick);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      letter-spacing: 0;
+      line-height: 1.08;
+      font-family: "Iowan Old Style", "Songti SC", "STSong", "Noto Serif CJK SC", serif;
+    }
+
+    h1 {
+      margin-top: 22px;
+      max-width: 880px;
+      font-size: clamp(46px, 7vw, 96px);
+      font-weight: 700;
+    }
+
+    h2 {
+      font-size: clamp(32px, 4.5vw, 60px);
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-size: 24px;
+    }
+
+    .hero-lead {
+      max-width: 760px;
+      margin: 26px 0 0;
+      color: #39352e;
+      font-size: clamp(20px, 2.2vw, 29px);
+      line-height: 1.55;
+      font-weight: 650;
+    }
+
+    .hero-copy {
+      max-width: 720px;
+      margin: 20px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 800;
+      box-shadow: 4px 4px 0 var(--ink);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .button:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    .button.primary {
+      color: #fffaf0;
+      background: var(--ink);
+      box-shadow: 4px 4px 0 var(--brick);
+    }
+
+    .hero-visual {
+      position: relative;
+      padding: 26px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: #fdf8ed;
+      box-shadow: var(--shadow);
+    }
+
+    .signal-map {
+      position: relative;
+      min-height: 430px;
+      border: 1px solid var(--line);
+      background:
+        radial-gradient(circle at center, rgba(184, 74, 46, 0.10), transparent 34%),
+        #fffdf6;
+      overflow: hidden;
+    }
+
+    .signal-map::before,
+    .signal-map::after {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border: 1px dashed rgba(49, 92, 132, 0.32);
+      transform: rotate(-8deg);
+    }
+
+    .signal-map::after {
+      inset: 25%;
+      border-color: rgba(86, 98, 74, 0.42);
+      transform: rotate(13deg);
+    }
+
+    .node {
+      position: absolute;
+      z-index: 2;
+      width: min(45%, 190px);
+      padding: 13px 14px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 5px 5px 0 rgba(23, 23, 23, 0.88);
+      font-size: 13px;
+      line-height: 1.35;
+      font-weight: 800;
+    }
+
+    .node span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .node.one { top: 28px; left: 24px; border-color: var(--brick); }
+    .node.two { top: 92px; right: 20px; border-color: var(--blue); }
+    .node.three { left: 42%; top: 190px; transform: translateX(-50%); border-color: var(--olive); }
+    .node.four { left: 26px; bottom: 40px; border-color: var(--green); }
+    .node.five { right: 30px; bottom: 28px; border-color: var(--gold); }
+
+    .core {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      width: 142px;
+      height: 142px;
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      border: 2px solid var(--ink);
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--panel);
+      text-align: center;
+      font-family: "Iowan Old Style", "Songti SC", serif;
+      font-size: 19px;
+      line-height: 1.18;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-note {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .mini-stat {
+      padding: 14px;
+      border-left: 3px solid var(--brick);
+      background: rgba(255, 255, 255, 0.45);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 20px;
+      line-height: 1.1;
+    }
+
+    .mini-stat span {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    section {
+      padding: 86px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 42px;
+      align-items: start;
+      margin-bottom: 34px;
+    }
+
+    .section-kicker {
+      color: var(--brick);
+      font-size: 13px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .section-intro {
+      margin: 0;
+      color: #3a362f;
+      font-size: 20px;
+      line-height: 1.7;
+      font-weight: 650;
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid rgba(23, 23, 23, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.76);
+      padding: 24px;
+      box-shadow: 0 12px 28px rgba(43, 36, 24, 0.06);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-family: "Avenir Next", "PingFang SC", sans-serif;
+      font-size: 19px;
+      line-height: 1.35;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .card p {
+      margin: 0;
+    }
+
+    .card ul,
+    .card ol {
+      margin: 12px 0 0;
+      padding-left: 19px;
+    }
+
+    .number {
+      display: inline-grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 18px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--brick);
+      font-weight: 900;
+    }
+
+    .solution-band {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 30px;
+      align-items: stretch;
+      padding: 34px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: #1d1d1b;
+      color: #fffaf0;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .solution-band p,
+    .solution-band li {
+      color: rgba(255, 250, 240, 0.76);
+    }
+
+    .signal-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .signal-list li {
+      padding: 12px 13px;
+      border: 1px solid rgba(255, 250, 240, 0.22);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.06);
+      color: #fffaf0;
+      font-size: 14px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      counter-reset: step;
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 176px;
+      padding: 22px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: #fffdf6;
+    }
+
+    .flow-step::before {
+      counter-increment: step;
+      content: "0" counter(step);
+      display: block;
+      margin-bottom: 24px;
+      color: var(--brick);
+      font-family: "Iowan Old Style", serif;
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .flow-step h3 {
+      font-family: "Avenir Next", "PingFang SC", sans-serif;
+      font-size: 17px;
+      margin-bottom: 10px;
+    }
+
+    .flow-step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.58;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 0 11px;
+      border: 1px solid rgba(23, 23, 23, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.48);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .wedge {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .wedge-title {
+      padding: 30px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: var(--brick);
+      color: #fffaf0;
+      box-shadow: 8px 8px 0 var(--ink);
+    }
+
+    .wedge-title h3 {
+      margin-bottom: 14px;
+      font-size: 34px;
+    }
+
+    .wedge-title p {
+      margin: 0;
+      color: rgba(255, 250, 240, 0.82);
+      font-size: 16px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 15px;
+      align-items: start;
+      padding: 18px;
+      border: 1px solid rgba(23, 23, 23, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.72);
+    }
+
+    .timeline-item b {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--ink);
+      border-radius: 50%;
+      background: var(--panel);
+      color: var(--blue);
+      font-family: "Iowan Old Style", serif;
+      font-size: 20px;
+    }
+
+    .timeline-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .market-map {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .market-cell {
+      min-height: 156px;
+      padding: 22px;
+      border: 1px solid rgba(23, 23, 23, 0.2);
+      border-radius: var(--radius);
+      background: #fffdf6;
+    }
+
+    .market-cell h3 {
+      margin-bottom: 10px;
+      font-family: "Avenir Next", "PingFang SC", sans-serif;
+      font-size: 18px;
+    }
+
+    .market-cell p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: #fffdf6;
+    }
+
+    .roadmap-phase {
+      padding: 26px;
+      border-right: 1px solid var(--line);
+    }
+
+    .roadmap-phase:last-child {
+      border-right: none;
+    }
+
+    .roadmap-phase time {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--brick);
+      font-weight: 900;
+    }
+
+    .roadmap-phase h3 {
+      margin-bottom: 14px;
+      font-family: "Avenir Next", "PingFang SC", sans-serif;
+      font-size: 18px;
+    }
+
+    .roadmap-phase ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .quote-block {
+      padding: 34px;
+      border-left: 8px solid var(--brick);
+      background: #fffdf6;
+      box-shadow: var(--shadow);
+    }
+
+    .quote-block p {
+      margin: 0;
+      color: #2f2c26;
+      font-family: "Iowan Old Style", "Songti SC", serif;
+      font-size: clamp(24px, 3vw, 38px);
+      line-height: 1.45;
+      font-weight: 700;
+    }
+
+    .long-copy {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 42px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.78);
+      color: #36322c;
+      font-size: 18px;
+      line-height: 1.9;
+    }
+
+    .long-copy p {
+      margin: 0 0 18px;
+    }
+
+    .long-copy p:last-child {
+      margin-bottom: 0;
+    }
+
+    .footer {
+      padding: 46px 0 70px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      border-top: 1px solid var(--line);
+      padding-top: 22px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .icon-action {
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(23, 23, 23, 0.22);
+      border-radius: 50%;
+      background: rgba(255, 250, 240, 0.68);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 17px;
+      font-weight: 900;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    .icon-action:hover {
+      transform: translateY(-2px);
+      border-color: var(--brick);
+      background: #fffdf6;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background:
+        linear-gradient(120deg, rgba(184, 74, 46, 0.10), transparent 34%),
+        linear-gradient(290deg, rgba(49, 92, 132, 0.12), transparent 42%),
+        linear-gradient(0deg, rgba(47, 107, 82, 0.08), transparent 52%);
+    }
+
+    .signal-lab {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      border-color: rgba(23, 23, 23, 0.26);
+      background: rgba(255, 253, 246, 0.82);
+      backdrop-filter: blur(12px);
+    }
+
+    .lab-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: baseline;
+      padding: 0 4px;
+    }
+
+    .lab-header span {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--brick);
+      text-transform: uppercase;
+    }
+
+    .lab-header small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .signal-map {
+      min-height: 390px;
+      border: 1px solid rgba(23, 23, 23, 0.16);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(23, 23, 23, 0.035) 1px, transparent 1px) 0 0 / 36px 36px,
+        linear-gradient(0deg, rgba(23, 23, 23, 0.032) 1px, transparent 1px) 0 0 / 36px 36px,
+        #fffdf6;
+    }
+
+    .signal-map::before,
+    .signal-map::after {
+      display: none;
+    }
+
+    .core,
+    .node {
+      border-radius: 18px;
+      cursor: pointer;
+      font-family: "Avenir Next", "PingFang SC", "Microsoft YaHei", sans-serif;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .core {
+      border-radius: 50%;
+      border: 0;
+      box-shadow: 0 18px 40px rgba(23, 23, 23, 0.24);
+    }
+
+    .core:hover,
+    .node:hover,
+    .node.active {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 18px 36px rgba(43, 36, 24, 0.18);
+      background: #ffffff;
+    }
+
+    .node {
+      width: min(42%, 175px);
+      text-align: left;
+      color: var(--ink);
+      appearance: none;
+    }
+
+    .node.active {
+      border-width: 2px;
+    }
+
+    .node.three.active {
+      transform: translateX(-50%) translateY(-5px) scale(1.02);
+    }
+
+    .signal-detail {
+      display: grid;
+      gap: 8px;
+      padding: 18px;
+      border: 1px solid rgba(23, 23, 23, 0.16);
+      border-radius: var(--radius);
+      background: #171717;
+      color: #fffaf0;
+    }
+
+    .signal-detail .detail-kicker,
+    .signal-detail .detail-metric b {
+      color: #f4b38d;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .signal-detail h3 {
+      font-family: "Avenir Next", "PingFang SC", sans-serif;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .signal-detail p {
+      margin: 0;
+      color: rgba(255, 250, 240, 0.78);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .detail-metric {
+      display: grid;
+      gap: 2px;
+      margin-top: 4px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 250, 240, 0.16);
+    }
+
+    .detail-metric span {
+      color: rgba(255, 250, 240, 0.72);
+      font-size: 13px;
+    }
+
+    .mini-stat {
+      cursor: default;
+      transition: transform 160ms ease, background 160ms ease;
+    }
+
+    .mini-stat:hover {
+      transform: translateY(-3px);
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .module-card {
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      min-height: 180px;
+      transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+    }
+
+    .module-card::after {
+      content: "点击演示";
+      position: absolute;
+      right: 16px;
+      bottom: 14px;
+      color: rgba(23, 23, 23, 0.34);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .module-card:hover,
+    .module-card.active {
+      transform: translateY(-5px);
+      border-color: var(--brick);
+      background: #fffdf6;
+    }
+
+    .module-card.active::after {
+      color: var(--brick);
+      content: "当前模块";
+    }
+
+    .module-console {
+      display: grid;
+      gap: 6px;
+      margin-top: 18px;
+      padding: 22px 24px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: #171717;
+      color: #fffaf0;
+    }
+
+    .module-console span {
+      color: #f4b38d;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .module-console strong {
+      font-family: "Iowan Old Style", "Songti SC", serif;
+      font-size: 28px;
+      line-height: 1.12;
+    }
+
+    .module-console p {
+      margin: 0;
+      color: rgba(255, 250, 240, 0.74);
+      font-size: 15px;
+    }
+
+    .roadmap-phase {
+      cursor: pointer;
+      min-height: 236px;
+      transition: background 180ms ease, transform 180ms ease;
+    }
+
+    .roadmap-phase:hover,
+    .roadmap-phase.open {
+      background: #fff7df;
+    }
+
+    .roadmap-phase.open {
+      transform: translateY(-4px);
+    }
+
+    .roadmap-phase ul {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 220ms ease;
+    }
+
+    .roadmap-phase.open ul {
+      max-height: 260px;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      z-index: 50;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fffaf0;
+      box-shadow: var(--shadow);
+      font-size: 13px;
+      font-weight: 800;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 14px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .lens-section {
+      padding: 58px 0;
+      background:
+        linear-gradient(120deg, rgba(184, 74, 46, 0.08), transparent 34%),
+        linear-gradient(290deg, rgba(49, 92, 132, 0.09), transparent 40%);
+    }
+
+    .lens-board {
+      display: grid;
+      grid-template-columns: minmax(260px, 0.82fr) minmax(260px, 0.72fr) minmax(360px, 1.1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .lens-copy,
+    .lens-tabs,
+    .lens-answer {
+      border: 1px solid rgba(23, 23, 23, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.82);
+      box-shadow: 0 14px 34px rgba(43, 36, 24, 0.08);
+    }
+
+    .lens-copy {
+      padding: 24px;
+    }
+
+    .lens-copy h2 {
+      margin-bottom: 14px;
+      font-size: clamp(30px, 3vw, 48px);
+    }
+
+    .lens-copy p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .lens-tabs {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+    }
+
+    .lens-tab {
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      background: transparent;
+      color: #3a362f;
+      cursor: pointer;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 900;
+      transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+    }
+
+    .lens-tab:hover,
+    .lens-tab.active {
+      border-color: rgba(184, 74, 46, 0.32);
+      background: #fffdf6;
+      transform: translateX(4px);
+    }
+
+    .lens-answer {
+      display: grid;
+      align-content: center;
+      gap: 12px;
+      padding: 28px;
+      border-color: var(--ink);
+      background: #171717;
+      color: #fffaf0;
+    }
+
+    .lens-answer span {
+      color: #f4b38d;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .lens-answer h3 {
+      font-family: "Iowan Old Style", "Songti SC", serif;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.24;
+    }
+
+    .lens-answer p {
+      margin: 0;
+      color: rgba(255, 250, 240, 0.75);
+      font-size: 15px;
+    }
+
+    .lens-answer a {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      margin-top: 8px;
+      padding: 0 13px;
+      border: 1px solid rgba(255, 250, 240, 0.3);
+      border-radius: 999px;
+      color: #fffaf0;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .section-tools {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .mini-button {
+      min-height: 34px;
+      padding: 0 12px;
+      border: 1px solid rgba(23, 23, 23, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 250, 240, 0.75);
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 900;
+      transition: transform 160ms ease, border-color 160ms ease, color 160ms ease;
+    }
+
+    .mini-button:hover {
+      transform: translateY(-2px);
+      border-color: var(--brick);
+      color: var(--brick);
+    }
+
+    .bp-faq {
+      display: grid;
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .bp-faq details {
+      border: 1px solid rgba(23, 23, 23, 0.18);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 240, 0.78);
+      overflow: hidden;
+    }
+
+    .bp-faq summary {
+      cursor: pointer;
+      padding: 18px 20px;
+      font-weight: 900;
+    }
+
+    .bp-faq details[open] summary {
+      border-bottom: 1px solid rgba(23, 23, 23, 0.1);
+      color: var(--brick);
+    }
+
+    .bp-faq details p {
+      margin: 0;
+      padding: 0 20px 18px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .signal-map {
+      display: grid;
+      grid-template-columns: minmax(180px, 0.78fr) minmax(260px, 1fr);
+      gap: 14px;
+      min-height: 0;
+      padding: 16px;
+      overflow: visible;
+    }
+
+    .signal-picker {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .signal-picker .node {
+      position: static;
+      width: 100%;
+      min-height: 66px;
+      padding: 13px 14px;
+      border-radius: var(--radius);
+      box-shadow: none;
+      background: rgba(255, 250, 240, 0.82);
+      transform: none;
+    }
+
+    .signal-picker .node:hover,
+    .signal-picker .node.active {
+      transform: translateX(4px);
+      box-shadow: inset 4px 0 0 var(--brick);
+      background: #fffdf6;
+    }
+
+    .signal-output {
+      display: grid;
+      align-content: stretch;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .signal-output .core {
+      position: static;
+      width: 100%;
+      height: auto;
+      min-height: 128px;
+      display: grid;
+      place-items: center;
+      gap: 6px;
+      padding: 24px;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius);
+      background: var(--ink);
+      color: var(--panel);
+      transform: none;
+      font-family: "Iowan Old Style", "Songti SC", serif;
+      font-size: 32px;
+      box-shadow: none;
+    }
+
+    .signal-output .core span {
+      display: block;
+      color: rgba(255, 250, 240, 0.68);
+      font-family: "Avenir Next", "PingFang SC", sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .signal-output .core:hover {
+      transform: none;
+      background: #242321;
+    }
+
+    .signal-pipeline {
+      display: grid;
+      grid-template-columns: 1fr 18px 1fr 18px 1fr;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .signal-pipeline span {
+      display: grid;
+      place-items: center;
+      min-height: 54px;
+      border: 1px solid rgba(23, 23, 23, 0.16);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.5);
+      color: #3a362f;
+      font-size: 13px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .signal-pipeline i {
+      display: block;
+      height: 2px;
+      background: var(--brick);
+    }
+
+    .asset-preview {
+      min-height: 92px;
+      padding: 16px;
+      border: 1px dashed rgba(23, 23, 23, 0.28);
+      border-radius: var(--radius);
+      background: #fffaf0;
+    }
+
+    .asset-preview b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    .asset-preview p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .section-head,
+      .solution-band,
+      .wedge {
+        grid-template-columns: 1fr;
+      }
+
+      .grid.three,
+      .grid.four,
+      .flow,
+      .roadmap,
+      .lens-board {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .lens-answer {
+        grid-column: 1 / -1;
+      }
+
+      .roadmap-phase:nth-child(2) {
+        border-right: none;
+      }
+
+      .roadmap-phase:last-child {
+        grid-column: 1 / -1;
+        border-top: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page-shell {
+        width: min(100% - 28px, 1180px);
+      }
+
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 12px 0;
+        gap: 8px;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 46px 0 36px;
+      }
+
+      h1 {
+        font-size: 42px;
+      }
+
+      section {
+        padding: 58px 0;
+      }
+
+      .hero-visual,
+      .solution-band,
+      .long-copy {
+        padding: 22px;
+      }
+
+      .signal-map {
+        min-height: 520px;
+      }
+
+      .node {
+        width: 210px;
+      }
+
+      .node.one { left: 16px; top: 18px; }
+      .node.two { right: 16px; top: 118px; }
+      .node.three { left: 50%; top: 238px; }
+      .node.four { left: 16px; bottom: 112px; }
+      .node.five { right: 16px; bottom: 18px; }
+
+      .hero-note,
+      .grid.two,
+      .grid.three,
+      .grid.four,
+      .signal-list,
+      .flow,
+      .market-map,
+      .roadmap,
+      .lens-board,
+      .signal-map {
+        grid-template-columns: 1fr;
+      }
+
+      .roadmap-phase,
+      .roadmap-phase:nth-child(2),
+      .roadmap-phase:last-child {
+        border-right: none;
+        border-top: 1px solid var(--line);
+      }
+
+      .roadmap-phase:first-child {
+        border-top: none;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .topbar,
+      .hero-actions {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      section,
+      .hero {
+        break-inside: avoid;
+        padding: 32px 0;
+      }
+
+      .card,
+      .hero-visual,
+      .solution-band,
+      .quote-block,
+      .long-copy {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="page-shell topbar-inner">
+      <a class="brand" href="#top" aria-label="回到顶部">
+        <span class="mark" aria-hidden="true"></span>
+        Investor BP
+      </a>
+      <nav class="nav" aria-label="页面导航">
+        <a href="#problem">问题</a>
+        <a href="#solution">方案</a>
+        <a href="#product">产品</a>
+        <a href="#wedge">切入</a>
+        <a href="#business">商业</a>
+        <a href="#roadmap">路线图</a>
+        <a href="#intro">介绍</a>
+      </nav>
+      <div class="top-actions" aria-label="页面操作">
+        <button class="icon-action" type="button" data-copy-pitch title="复制 30 秒口播" aria-label="复制 30 秒口播">⧉</button>
+      </div>
+    </div>
+    <div class="read-progress" data-read-progress aria-hidden="true"></div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="page-shell hero-grid">
+        <div>
+          <span class="eyebrow">AI 原生个人工作底座</span>
+          <h1>AI Personal Growth OS</h1>
+          <p class="hero-lead">面向高认知个体、一人公司、创作者、销售/咨询/BD 型从业者的个人成长与商业机会操作系统。</p>
+          <p class="hero-copy">它把日常信息、会议纪要、客户沟通、活动人脉、个人复盘和下一步行动统一沉淀为可追踪的 Growth Signals，帮助用户把散乱输入变成可复盘、可输出、可验证商业机会的长期资产。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#intro">查看 1000 字介绍</a>
+            <a class="button" href="ai-personal-growth-os-investor-bp.md">打开 Markdown 版</a>
+          </div>
+        </div>
+
+        <aside class="hero-visual signal-lab" aria-label="可交互产品信号流示意">
+          <div class="lab-header">
+            <span>Growth Signal Workbench</span>
+            <small>选择一种输入，查看它如何变成资产</small>
+          </div>
+          <div class="signal-map">
+            <div class="signal-picker" aria-label="选择输入类型">
+              <button class="node one active" type="button" data-signal="input">会议与沟通<span>事实、洞察、待办</span></button>
+              <button class="node two" type="button" data-signal="people">人脉关系<span>人物、需求、资源</span></button>
+              <button class="node three" type="button" data-signal="ai">AI 对话<span>判断、方案、输出</span></button>
+              <button class="node four" type="button" data-signal="content">内容与项目<span>选题、原型、服务</span></button>
+              <button class="node five" type="button" data-signal="business">商业机会<span>验证、跟进、转化</span></button>
+            </div>
+            <div class="signal-output">
+              <button class="core" type="button" data-signal="core">Growth Signal<span>统一数据单位</span></button>
+              <div class="signal-pipeline" aria-label="转化流程">
+                <span>输入</span>
+                <i aria-hidden="true"></i>
+                <span>结构化</span>
+                <i aria-hidden="true"></i>
+                <span>行动 / 机会</span>
+              </div>
+              <div class="asset-preview">
+                <b>输出资产</b>
+                <p>人物档案、行动看板、商业机会、内容选题、复盘地图</p>
+              </div>
+            </div>
+          </div>
+          <div class="signal-detail" data-signal-detail>
+            <span class="detail-kicker">当前节点</span>
+            <h3>会议与沟通</h3>
+            <p>把会议纪要、聊天记录和现场交流拆成事实、人物、机会和下一步行动，避免高价值信息停在“总结得不错”。</p>
+            <div class="detail-metric"><b>Investor Lens</b><span>真实输入密度高，最适合作为早期切入场景。</span></div>
+          </div>
+          <div class="hero-note">
+            <div class="mini-stat"><strong>入口</strong><span>链接、会议、聊天、截图、想法</span></div>
+            <div class="mini-stat"><strong>结构</strong><span>来源、人物、主题、机会、行动</span></div>
+            <div class="mini-stat"><strong>复利</strong><span>复盘、跟进、输出、商业验证</span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="investor-lens" class="lens-section">
+      <div class="page-shell">
+        <div class="lens-board">
+          <div class="lens-copy">
+            <span class="section-kicker">Investor Lens</span>
+            <h2>投资人会先问什么</h2>
+            <p>这不是普通目录，而是把 BP 按投资人常见问题重新组织。点一个问题，右侧会切换成对应回答，并带你跳到正文证据。</p>
+          </div>
+          <div class="lens-tabs" role="tablist" aria-label="投资人问题">
+            <button class="lens-tab active" type="button" data-lens="why">为什么现在</button>
+            <button class="lens-tab" type="button" data-lens="who">谁会付费</button>
+            <button class="lens-tab" type="button" data-lens="wedge">先从哪切</button>
+            <button class="lens-tab" type="button" data-lens="moat">护城河</button>
+            <button class="lens-tab" type="button" data-lens="risk">待验证</button>
+          </div>
+          <article class="lens-answer" data-lens-answer>
+            <span>为什么现在</span>
+            <h3>AI 让输出爆炸，但个人上下文和行动闭环没有自动形成。</h3>
+            <p>用户已经能生成更多内容、总结和方案，但高价值信息仍散落在聊天、会议、收藏夹和 AI 对话里。这创造了新的个人工作底座机会。</p>
+            <a href="#problem" data-lens-link>查看正文证据</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="summary">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Investment Summary</span>
+            <h2>投资摘要</h2>
+            <div class="section-tools">
+              <button class="mini-button" type="button" data-copy-text="AI Personal Growth OS 是一套 AI 原生个人工作底座，把日常信息、会议纪要、客户沟通、活动人脉、个人复盘和下一步行动统一沉淀为 Growth Signals，帮助用户把散乱输入变成可复盘、可输出、可验证商业机会的长期资产。">复制摘要</button>
+              <button class="mini-button" type="button" data-jump="#wedge">看早期切入</button>
+            </div>
+          </div>
+          <p class="section-intro">AI 正在显著降低内容生产、信息检索和原型开发的门槛，但也带来一个新的问题：个人每天产生更多材料，却更难形成复利。</p>
+        </div>
+        <div class="quote-block">
+          <p>真正稀缺的不是单次生成能力，而是长期上下文、关系网络、判断标准和行动闭环。</p>
+        </div>
+        <div class="grid three" style="margin-top: 18px;">
+          <article class="card">
+            <h3>当前形态</h3>
+            <p>一套 AI 原生的个人工作底座，让每一次输入都被识别、分类、脱敏、沉淀和复盘。</p>
+          </article>
+          <article class="card">
+            <h3>已有基础</h3>
+            <p>已形成 Growth Signal Inbox、LinkLog、Kathy People Profile、活动复盘资产流等可演示原型。</p>
+          </article>
+          <article class="card">
+            <h3>下一阶段</h3>
+            <p>从个人自用系统走向可复制产品，优先服务高频使用 AI、同时管理关系、内容、客户和机会的种子用户。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="problem">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Problem</span>
+            <h2>为什么现在需要它</h2>
+            <div class="section-tools">
+              <button class="mini-button" type="button" data-copy-text="AI 让个人产出变多，但没有自动形成复利。高价值信息散落在微信、会议纪要、收藏夹、笔记软件、AI 对话和本地文件中，无法持续转化为内容、产品、服务和商业验证。">复制痛点</button>
+            </div>
+          </div>
+          <p class="section-intro">大量有价值的信息仍然散落在微信、会议纪要、收藏夹、笔记软件、表格、AI 对话和本地文件中，无法持续转化为内容、产品、服务和商业验证。</p>
+        </div>
+        <div class="grid four">
+          <article class="card">
+            <span class="number">1</span>
+            <h3>AI 让产出变多，但没有自动形成复利</h3>
+            <p>没有统一底表和复盘机制，AI 会制造更多材料，却不一定让用户变强。</p>
+          </article>
+          <article class="card">
+            <span class="number">2</span>
+            <h3>个人最有价值的数据散在不同地方</h3>
+            <p>真实成长和商业机会来自会议、聊天、客户反馈、线下活动、人脉关系和个人判断。</p>
+          </article>
+          <article class="card">
+            <span class="number">3</span>
+            <h3>现有工具各自解决一小段</h3>
+            <p>笔记偏存储，CRM 偏销售，项目管理偏任务，AI Chat 偏即时回答，缺少个人操作系统。</p>
+          </article>
+          <article class="card">
+            <span class="number">4</span>
+            <h3>关系、机会和行动没有被结构化</h3>
+            <p>活动结束后，名片、微信、聊天记录和会议纪要很快失去上下文。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="solution">
+      <div class="page-shell">
+        <div class="solution-band">
+          <div>
+            <span class="section-kicker" style="color:#f4b38d;">Solution</span>
+            <h2>把个人输入转化为 Growth Signal</h2>
+            <p>系统不是简单总结材料，而是先判断材料类型，再决定进入不同资产链：信息输入、关系输入、商业机会、方法论材料、输出资产、待脱敏公开材料或个人复盘。</p>
+          </div>
+          <ul class="signal-list">
+            <li>来源是什么？</li>
+            <li>它包含什么事实或洞察？</li>
+            <li>它关联哪些人和主题？</li>
+            <li>能否变成内容、产品、服务或商业验证？</li>
+            <li>它对应什么下一步行动？</li>
+            <li>它应该进入哪条长期资产链？</li>
+          </ul>
+        </div>
+        <div class="grid three" style="margin-top: 18px;">
+          <article class="card"><h3>知识可以复盘</h3><p>信息不再只是收藏，而是被挂到主题、人物、项目和行动上。</p></article>
+          <article class="card"><h3>关系可以恢复上下文</h3><p>每次见面、聊天和跟进，都能变成下一次关系推进的背景。</p></article>
+          <article class="card"><h3>机会可以持续跟进</h3><p>从真实输入里识别可验证的内容、产品、服务和合作机会。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="product">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Product</span>
+            <h2>产品模块</h2>
+            <div class="section-tools">
+              <button class="mini-button" type="button" data-jump="#roadmap">看路线图</button>
+              <button class="mini-button" type="button" data-jump="#ask">看融资需求</button>
+            </div>
+          </div>
+          <p class="section-intro">产品不是一个更通用的知识库，而是围绕输入、关系、机会、行动和复盘组成的个人工作系统。</p>
+        </div>
+        <div class="grid three">
+          <article class="card module-card active" data-module="inbox">
+            <h3>Growth Signal Inbox</h3>
+            <p>用户把链接、会议纪要、聊天记录、活动材料、截图、播客笔记、客户沟通和想法草稿丢进系统，AI 自动完成入口分类、结构化拆解、资产归档和下一步建议。</p>
+          </article>
+          <article class="card module-card" data-module="linklog">
+            <h3>LinkLog</h3>
+            <p>面向线下活动和高关系密度场景的人脉关系 Agent，把自我介绍、会议纪要、聊天记录和人物标签整理成关系档案。</p>
+          </article>
+          <article class="card module-card" data-module="profile">
+            <h3>People Profile</h3>
+            <p>记录对方背景、正在做的事、优势、卡点、想链接的资源、我能提供的帮助、现场话题和会后动作。</p>
+          </article>
+          <article class="card module-card" data-module="action">
+            <h3>Action Board</h3>
+            <p>当会议纪要或沟通材料产生多个待办时，拆出主线、依赖关系、负责人、前置条件和完成标准。</p>
+          </article>
+          <article class="card module-card" data-module="review">
+            <h3>Review &amp; Growth Map</h3>
+            <p>按时间、主题、人物、机会和行动回看输入与输出，发现长期主线、重复机会、值得加深的关系和需要放弃的噪音。</p>
+          </article>
+          <article class="card module-card" data-module="output">
+            <h3>Output Asset</h3>
+            <p>把真实输入沉淀为可对外展示的介绍、提案、页面、内容选题和商业验证材料。</p>
+          </article>
+        </div>
+        <div class="module-console" aria-live="polite" data-module-console>
+          <span>当前演示模块</span>
+          <strong>Growth Signal Inbox</strong>
+          <p>统一接收所有材料，先做入口分类，再进入关系、机会、行动或输出资产链。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="users">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Users</span>
+            <h2>第一阶段种子用户</h2>
+          </div>
+          <p class="section-intro">这些用户都不是缺工具，而是缺一套能长期运转的个人工作系统。</p>
+        </div>
+        <div class="tag-row">
+          <span class="tag">AI Builder</span>
+          <span class="tag">一人公司</span>
+          <span class="tag">Solo Founder</span>
+          <span class="tag">独立顾问</span>
+          <span class="tag">创作者</span>
+          <span class="tag">销售 / BD</span>
+          <span class="tag">增长运营</span>
+          <span class="tag">咨询型从业者</span>
+        </div>
+        <div class="grid two" style="margin-top: 22px;">
+          <article class="card">
+            <h3>他们每天有大量输入，也有大量 AI 输出</h3>
+            <ul>
+              <li>哪些信息真的重要？</li>
+              <li>哪些人应该继续跟进？</li>
+              <li>哪些想法值得变成内容或产品？</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>他们需要更靠近商业结果的个人系统</h3>
+            <ul>
+              <li>哪些客户反馈意味着真实付费机会？</li>
+              <li>自己过去一段时间到底在形成什么主线？</li>
+              <li>下一步行动如何进入真实推进？</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="wedge">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Wedge</span>
+            <h2>早期切入场景</h2>
+            <div class="section-tools">
+              <button class="mini-button" type="button" data-copy-text="早期切入场景是活动后的人脉、沟通和机会复盘。这个场景输入真实、痛点明确、商业价值更近，可以从 LinkLog + Growth Signal Inbox 组合切入，再自然扩展到客户沟通、销售机会、内容选题、个人复盘和长期成长地图。">复制切入场景</button>
+            </div>
+          </div>
+          <p class="section-intro">长期愿景是个人成长和商业机会操作系统，但早期不从“大而全的知识库”切入，而是先抓住活动后的人脉、沟通和机会复盘。</p>
+        </div>
+        <div class="wedge">
+          <div class="wedge-title">
+            <h3>活动后的人脉与机会复盘</h3>
+            <p>输入真实，痛点明确，商业价值更近。关系背后常常连接合作、客户、内容、资源和项目机会。</p>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item"><b>1</b><p>用户参加活动或会议后，上传自我介绍、会议纪要、聊天记录、人物信息或截图。</p></div>
+            <div class="timeline-item"><b>2</b><p>系统自动生成 People Profile、关系标签、共同话题、可帮助点和后续跟进建议。</p></div>
+            <div class="timeline-item"><b>3</b><p>如果材料里出现合作、客户、资源或商业机会，系统继续生成 Action Board 和 Growth Signal records。</p></div>
+            <div class="timeline-item"><b>4</b><p>用户在一周或一个月后复盘：哪些人继续推进了，哪些机会转化了，哪些主题反复出现。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="market">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Market</span>
+            <h2>市场机会</h2>
+          </div>
+          <p class="section-intro">AI 原生个人工作系统会从笔记、CRM、Agent Workflow 和个人生产力工具之间长出来。</p>
+        </div>
+        <div class="market-map">
+          <article class="market-cell"><h3>笔记和知识库</h3><p>Notion、Obsidian、飞书文档等偏存储和管理。</p></article>
+          <article class="market-cell"><h3>个人 CRM 和关系管理</h3><p>通讯录、表格、人脉管理工具处理关系，但很少理解真实上下文。</p></article>
+          <article class="market-cell"><h3>AI 助手和 Agent Workflow</h3><p>ChatGPT、Claude、Codex 与自动化 Agent 擅长即时生成和流程执行。</p></article>
+          <article class="market-cell"><h3>个人生产力和项目管理</h3><p>Todo、看板、复盘和目标管理工具强调推进，但不理解输入来源。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="business">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Business Model</span>
+            <h2>商业模式</h2>
+          </div>
+          <p class="section-intro">早期用高触达服务理解需求，沉淀模板和流程；中期把高频、可重复、可模板化的流程产品化。</p>
+        </div>
+        <div class="grid four">
+          <article class="card"><h3>个人订阅</h3><p>提供 Growth Signal Inbox、关系档案、行动看板、复盘地图、AI 拆解额度和跨工具同步能力。</p></article>
+          <article class="card"><h3>工作流模板和 Skill 市场</h3><p>活动人脉复盘、客户沟通拆解、商业机会判断、内容选题、周/月复盘模板。</p></article>
+          <article class="card"><h3>高阶陪跑和服务</h3><p>一人公司 AI 工作流搭建、顾问客户沟通资产化、创作者知识资产和内容系统搭建。</p></article>
+          <article class="card"><h3>组织版 / 团队版</h3><p>面向创始人办公室、咨询团队、销售团队、投资人关系管理、社群和活动运营团队。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="traction">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Traction</span>
+            <h2>当前进展</h2>
+          </div>
+          <p class="section-intro">项目处于早期原型和场景验证阶段，原型来自真实个人工作流，而不是抽象需求想象。</p>
+        </div>
+        <div class="grid three">
+          <article class="card"><h3>已形成的基础资产</h3><p>AI Personal Growth OS、Growth Signal Inbox、LinkLog、Kathy People Profile、Action Board。</p></article>
+          <article class="card"><h3>已使用的真实场景</h3><p>活动报名、会议纪要拆解、人脉整理、客户沟通分析、内容输出和商业机会判断。</p></article>
+          <article class="card"><h3>下一步验证</h3><p>哪些场景最强、哪些用户最高频、哪类工作流最愿意付费，以及产品化入口选择。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="moat">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Moat</span>
+            <h2>竞争优势</h2>
+          </div>
+          <p class="section-intro">长期上下文、真实关系网络和商业机会闭环，是这个系统区别于普通 AI 知识库的核心。</p>
+        </div>
+        <div class="grid four">
+          <article class="card"><h3>从真实工作流长出来</h3><p>从活动、客户沟通、会议纪要、社交关系和商业机会中生长，而不是从抽象概念出发。</p></article>
+          <article class="card"><h3>关系和机会是核心</h3><p>把人、关系、机会和下一步行动放在同等重要的位置。</p></article>
+          <article class="card"><h3>长期上下文是护城河</h3><p>用户越持续使用，系统越理解用户目标、判断标准、关系网络和商业主线。</p></article>
+          <article class="card"><h3>服务验证走向产品化</h3><p>通过高触达服务获取需求，再把高频流程沉淀成产品模块。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="roadmap">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Roadmap</span>
+            <h2>路线图</h2>
+          </div>
+          <p class="section-intro">先验证高频场景，再做产品化 MVP，最后从个人系统扩展到小团队协作。</p>
+        </div>
+        <div class="roadmap">
+          <article class="roadmap-phase open" data-phase>
+            <time>0-3 个月</time>
+            <h3>高频场景验证</h3>
+            <ul>
+              <li>明确 2-3 个最强入口场景</li>
+              <li>邀请 10-30 位种子用户试用</li>
+              <li>打磨 Growth Signal 核心数据结构</li>
+              <li>形成第一批可收费工作流模板</li>
+            </ul>
+          </article>
+          <article class="roadmap-phase" data-phase>
+            <time>3-6 个月</time>
+            <h3>产品化 MVP</h3>
+            <ul>
+              <li>做出稳定 Web 端或轻量插件入口</li>
+              <li>支持材料上传、AI 拆解、关系档案、行动看板和复盘视图</li>
+              <li>建立个人订阅和高阶服务付费试验</li>
+            </ul>
+          </article>
+          <article class="roadmap-phase" data-phase>
+            <time>6-12 个月</time>
+            <h3>走向小团队协作</h3>
+            <ul>
+              <li>增强跨项目、人物、主题搜索和推荐</li>
+              <li>推出工作流模板市场或 Skill 包</li>
+              <li>探索团队版和组织版</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="ask">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Ask</span>
+            <h2>融资 / 合作需求</h2>
+          </div>
+          <p class="section-intro">希望寻找懂 AI Agent、个人生产力、知识管理、CRM、创作者经济或 ToB SaaS 的天使投资人和产品技术伙伴。</p>
+        </div>
+        <div class="grid two">
+          <article class="card">
+            <h3>资源主要用于</h3>
+            <ul>
+              <li>产品 MVP 开发</li>
+              <li>AI 工作流和数据结构设计</li>
+              <li>种子用户验证</li>
+              <li>关键集成和自动化能力</li>
+              <li>早期商业化试验</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>需要诚实验证的问题</h3>
+            <ul>
+              <li>用户是否愿意持续把真实材料输入系统？</li>
+              <li>个人用户会为长期上下文和行动闭环付多少钱？</li>
+              <li>最强入口是知识整理、活动人脉、客户沟通，还是周复盘？</li>
+              <li>关系资产和商业机会管理是否能形成高频习惯？</li>
+            </ul>
+          </article>
+        </div>
+        <div class="bp-faq" aria-label="投资人常见问题">
+          <details open>
+            <summary>这个项目最先验证什么？</summary>
+            <p>先验证活动后的人脉、沟通和机会复盘是否足够高频，以及用户是否愿意持续把真实材料输入系统。</p>
+          </details>
+          <details>
+            <summary>为什么不是普通知识库？</summary>
+            <p>普通知识库偏存储，AI Personal Growth OS 更强调人物、关系、商业机会和下一步行动，把输入推进到复盘和验证。</p>
+          </details>
+          <details>
+            <summary>早期商业化怎么做？</summary>
+            <p>先用高阶陪跑和模板验证付费意愿，再把高频流程产品化为订阅、工作流模板和团队版能力。</p>
+          </details>
+          <details>
+            <summary>最大的风险是什么？</summary>
+            <p>用户是否愿意持续输入真实材料，以及关系资产和商业机会管理是否能形成足够高频的使用习惯。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="intro">
+      <div class="page-shell">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Copy</span>
+            <h2>1000 字以内项目介绍</h2>
+          </div>
+          <p class="section-intro">适合复制到项目平台、报名表或投资人初筛材料。</p>
+        </div>
+        <div class="long-copy">
+          <p>AI Personal Growth OS 是一套面向高认知个体、一人公司、创作者、销售/咨询/BD 型从业者的个人成长与商业机会操作系统。</p>
+          <p>AI 让每个人都能更快生成内容、方案和原型，但也带来新的问题：个人输入和 AI 输出越来越多，却散落在微信、会议纪要、收藏夹、笔记软件、表格和 AI 对话里，无法形成长期复利。真正有价值的个人资产，往往不是单篇笔记，而是长期上下文、关系网络、判断标准、行动记录和商业机会。</p>
+          <p>AI Personal Growth OS 将日常信息、会议纪要、客户沟通、活动人脉、个人复盘和下一步行动统一沉淀为 Growth Signals。每条 Growth Signal 会被 AI 识别来源、提取事实、关联人物和主题、判断是否能转化为内容/产品/服务/商业验证，并生成下一步行动建议。</p>
+          <p>产品包含 Growth Signal Inbox、LinkLog、People Profile、Action Board 和 Review &amp; Growth Map 等模块。Growth Signal Inbox 负责统一接收和拆解材料；LinkLog 帮助用户把线下活动中认识的人沉淀成可搜索、可复盘、可跟进的人脉资产；People Profile 保存人物背景、需求、资源和跟进动作；Action Board 把会议和沟通材料转成可推进的待办；Review &amp; Growth Map 帮助用户回看长期主线和机会变化。</p>
+          <p>目标用户包括 AI Builder、一人公司、独立顾问、创作者、销售/BD 和增长运营等信息密度、关系密度和机会密度都很高的人群。他们不是缺工具，而是缺一套能把输入、关系、判断、行动和复盘连起来的个人工作系统。</p>
+          <p>项目目前已有多个可演示原型和真实使用场景，包括 Growth Signal Inbox、LinkLog、Kathy People Profile、活动复盘资产流和个人 AI 工作流。下一阶段将重点验证高频入口场景、种子用户付费意愿和产品化 MVP。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="page-shell footer-inner">
+      <span>AI Personal Growth OS 投资人版 BP</span>
+      <span>Draft · 2026-06-23</span>
+    </div>
+  </footer>
+  <div class="toast" data-toast role="status" aria-live="polite"></div>
+  <script>
+    const signalContent = {
+      core: {
+        title: "Growth Signal",
+        body: "把输入、人物、主题、机会和行动放进同一个结构里，让 AI 不只是总结材料，而是帮助用户持续形成判断和复利。",
+        lens: "这是产品的数据单位，也是长期上下文和护城河的起点。"
+      },
+      input: {
+        title: "会议与沟通",
+        body: "把会议纪要、聊天记录和现场交流拆成事实、人物、机会和下一步行动，避免高价值信息停在“总结得不错”。",
+        lens: "真实输入密度高，最适合作为早期切入场景。"
+      },
+      people: {
+        title: "人脉关系",
+        body: "把活动中认识的人变成可恢复上下文的人物档案：对方是谁、需要什么、我能给什么、下一次怎么开口。",
+        lens: "关系不是通讯录，而是高价值机会的入口。"
+      },
+      ai: {
+        title: "AI 对话",
+        body: "把一次次 AI 对话里的判断、方案和输出沉淀回同一套底表，避免生成结果散落在不同聊天窗口。",
+        lens: "长期使用后，系统会越来越理解用户的判断标准。"
+      },
+      content: {
+        title: "内容与项目",
+        body: "从真实输入里提取内容选题、原型方向、服务包和项目线索，让输出不再凭空编，而是从实际场景生长。",
+        lens: "内容、产品和服务可以共享同一套 Growth Signal。"
+      },
+      business: {
+        title: "商业机会",
+        body: "识别客户需求、合作资源、付费可能和下一步验证动作，把关系和信息推进到商业结果。",
+        lens: "这是从个人知识库走向商业系统的关键差异。"
+      }
+    };
+
+    const moduleContent = {
+      inbox: ["Growth Signal Inbox", "统一接收所有材料，先做入口分类，再进入关系、机会、行动或输出资产链。"],
+      linklog: ["LinkLog", "活动后的人脉关系 Agent，把认识的人、共同话题、可帮助点和跟进建议沉淀下来。"],
+      profile: ["People Profile", "把人物背景、需求、资源、现场话题和会后动作整理成可搜索的关系档案。"],
+      action: ["Action Board", "把会议和沟通材料中的多个待办拆成主线、依赖、负责人、前置条件和完成标准。"],
+      review: ["Review & Growth Map", "按时间、人物、主题和机会回看输入与输出，发现长期主线和重复出现的机会。"],
+      output: ["Output Asset", "把真实输入转成对外介绍、提案、内容选题、Demo 页面和商业验证材料。"]
+    };
+
+    const lensContent = {
+      why: ["为什么现在", "AI 让输出爆炸，但个人上下文和行动闭环没有自动形成。", "用户已经能生成更多内容、总结和方案，但高价值信息仍散落在聊天、会议、收藏夹和 AI 对话里。这创造了新的个人工作底座机会。", "#problem"],
+      who: ["谁会付费", "信息密度、关系密度和机会密度都很高的人最先付费。", "一人公司、AI Builder、独立顾问、创作者、销售和 BD 需要把输入、关系、判断、行动和复盘连起来。", "#users"],
+      wedge: ["先从哪切", "先做活动后的人脉、沟通和机会复盘。", "这个场景输入真实、痛点明确、商业价值近，能从 LinkLog + Growth Signal Inbox 组合切入。", "#wedge"],
+      moat: ["护城河", "长期上下文、真实关系网络和商业机会闭环。", "用户持续使用后，系统会理解 TA 的目标、判断标准、关系网络、输出风格和商业主线。", "#moat"],
+      risk: ["待验证", "核心风险是持续输入和付费意愿。", "下一阶段要验证用户是否愿意持续输入真实材料，以及关系资产和商业机会管理是否能形成高频习惯。", "#ask"]
+    };
+
+    const pitchText = "我在做 AI Personal Growth OS，一套面向一人公司、创作者、销售、顾问和 AI Builder 的个人成长与商业机会操作系统。它把个人知识、关系、会议、客户沟通和下一步行动统一转成 Growth Signal，让 AI 帮用户识别来源、提取事实、关联人物和主题、判断商业机会，并生成下一步行动。";
+
+    const toast = document.querySelector("[data-toast]");
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    async function copyText(text, successMessage = "已复制") {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast(successMessage);
+      } catch {
+        showToast("浏览器限制复制，可手动复制页面文字");
+      }
+    }
+
+    const detail = document.querySelector("[data-signal-detail]");
+    const signalNodes = document.querySelectorAll("[data-signal]");
+    signalNodes.forEach((node) => {
+      node.addEventListener("click", () => {
+        const key = node.dataset.signal;
+        const item = signalContent[key];
+        if (!item) return;
+        signalNodes.forEach((other) => other.classList.toggle("active", other === node));
+        detail.innerHTML = `
+          <span class="detail-kicker">当前节点</span>
+          <h3>${item.title}</h3>
+          <p>${item.body}</p>
+          <div class="detail-metric"><b>Investor Lens</b><span>${item.lens}</span></div>
+        `;
+      });
+    });
+
+    const moduleCards = document.querySelectorAll("[data-module]");
+    const moduleConsole = document.querySelector("[data-module-console]");
+    moduleCards.forEach((card) => {
+      card.addEventListener("click", () => {
+        const [title, body] = moduleContent[card.dataset.module] || [];
+        if (!title) return;
+        moduleCards.forEach((other) => other.classList.toggle("active", other === card));
+        moduleConsole.innerHTML = `<span>当前演示模块</span><strong>${title}</strong><p>${body}</p>`;
+      });
+    });
+
+    document.querySelectorAll("[data-phase]").forEach((phase) => {
+      phase.addEventListener("click", () => {
+        document.querySelectorAll("[data-phase]").forEach((other) => {
+          if (other !== phase) other.classList.remove("open");
+        });
+        phase.classList.toggle("open");
+      });
+    });
+
+    const lensTabs = document.querySelectorAll("[data-lens]");
+    const lensAnswer = document.querySelector("[data-lens-answer]");
+    lensTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const item = lensContent[tab.dataset.lens];
+        if (!item) return;
+        lensTabs.forEach((other) => other.classList.toggle("active", other === tab));
+        lensAnswer.innerHTML = `<span>${item[0]}</span><h3>${item[1]}</h3><p>${item[2]}</p><a href="${item[3]}" data-lens-link>查看正文证据</a>`;
+      });
+    });
+
+    document.querySelectorAll("[data-copy-text]").forEach((button) => {
+      button.addEventListener("click", () => copyText(button.dataset.copyText, "摘要已复制"));
+    });
+
+    document.querySelectorAll("[data-jump]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.querySelector(button.dataset.jump)?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+
+    const progressBar = document.querySelector("[data-read-progress]");
+    const navLinks = [...document.querySelectorAll(".nav a")];
+    const sections = navLinks.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+    function updateReadingState() {
+      const scrollTop = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      progressBar.style.width = `${Math.max(0, Math.min(100, (scrollTop / maxScroll) * 100))}%`;
+      let activeId = "";
+      sections.forEach((section) => {
+        if (section.offsetTop <= scrollTop + 150) activeId = section.id;
+      });
+      navLinks.forEach((link) => link.classList.toggle("active", link.getAttribute("href") === `#${activeId}`));
+    }
+    window.addEventListener("scroll", updateReadingState, { passive: true });
+    updateReadingState();
+
+    document.querySelector("[data-copy-pitch]").addEventListener("click", async () => {
+      copyText(pitchText, "30 秒口播已复制");
+    });
+  </script>
+</body>
+</html>
