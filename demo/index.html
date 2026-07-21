@@ -1,0 +1,1760 @@
+<!doctype html>
+<html lang="zh-CN" data-step="self-start">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="LinkLog 关系工作台脱敏静态演示。不连接真实微信、通讯录或 AI 服务。" />
+    <title>LinkLog｜关系工作台 Demo</title>
+    <style>:root {
+  color-scheme: light;
+  --archive-paper: #f2ecdf;
+  --archive-paper-deep: #e8decc;
+  --archive-sheet: #f8f2e6;
+  --archive-green: #174f38;
+  --archive-green-soft: #6e8c7b;
+  --archive-amber: #bd7f2d;
+  --ink: #2d2d27;
+  --ink-soft: #766f63;
+  --green: var(--archive-green);
+  --line: rgba(76, 69, 58, 0.2);
+  --line-strong: rgba(50, 47, 40, 0.36);
+  --paper-shadow: 0 14px 30px rgba(58, 48, 34, 0.16), 0 2px 4px rgba(58, 48, 34, 0.1);
+  --ease-archive: cubic-bezier(0.2, 0.72, 0.2, 1);
+  font-family: "Avenir Next", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  background: #282824;
+  color: var(--ink);
+}
+
+button,
+input,
+textarea { font: inherit; }
+
+button { color: inherit; }
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--archive-amber);
+  outline-offset: 3px;
+}
+
+[hidden] { display: none !important; }
+
+.sr-only,
+.sr-only-control {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-rows: 82px minmax(0, 1fr) 25px;
+  width: 100vw;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--archive-paper);
+}
+
+.topbar {
+  position: relative;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: 245px minmax(650px, 1fr) 245px;
+  align-items: center;
+  min-height: 82px;
+  padding: 0 38px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(242, 236, 223, 0.96);
+}
+
+.brand,
+.brand-copy,
+.demo-controls,
+.topbar-meta { display: flex; align-items: center; }
+
+.brand { gap: 13px; }
+
+.brand-monogram {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 7px;
+  background: var(--archive-green);
+  color: #f6f0e4;
+  font-family: Georgia, serif;
+  font-size: 18px;
+  letter-spacing: -0.06em;
+}
+
+.brand-copy { align-items: flex-start; flex-direction: column; gap: 0; }
+.brand-copy strong { font-family: Georgia, "Songti SC", STSong, serif; font-size: 28px; line-height: 1; letter-spacing: -0.03em; }
+.brand-copy small { margin-top: 4px; color: var(--ink-soft); font-size: 11px; letter-spacing: 0.1em; }
+
+.demo-controls { justify-content: center; gap: 8px; }
+.quiet-button { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+
+.step-nav {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(76px, 112px));
+  width: min(672px, 100%);
+}
+
+.step-nav::before {
+  content: "";
+  position: absolute;
+  left: 8.33%;
+  right: 8.33%;
+  top: 35px;
+  height: 1px;
+  background: var(--line);
+}
+
+.step-nav button {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 58px;
+  border: 0;
+  background: transparent;
+  color: #8a8275;
+  cursor: pointer;
+  font-family: "Songti SC", STSong, serif;
+  font-size: 15px;
+}
+
+.step-nav button span {
+  order: 2;
+  display: block;
+  width: 9px;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #b8ad9b;
+  color: transparent;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.step-nav button[aria-current="step"] { color: var(--archive-green); font-weight: 700; }
+.step-nav button[aria-current="step"] span { background: var(--archive-green); transform: scale(1.18); box-shadow: 0 0 0 4px rgba(23, 79, 56, 0.08); }
+
+.topbar-meta { justify-content: flex-end; gap: 12px; }
+.data-badge { color: var(--archive-amber); font-size: 11px; letter-spacing: 0.08em; }
+.data-badge::before { content: "●"; margin-right: 5px; }
+
+.auto-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.auto-button span::before { content: "●"; margin-right: 7px; color: var(--archive-green); }
+.auto-button small { font-size: 10px; font-variant-numeric: tabular-nums; }
+.auto-button.is-playing span { color: var(--archive-green); }
+
+.workspace {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background-color: var(--archive-paper);
+}
+
+.workspace::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-left: 1px solid rgba(92, 82, 68, 0.05);
+  border-right: 1px solid rgba(92, 82, 68, 0.05);
+  pointer-events: none;
+}
+
+.workspace-screen {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.archive-desk { padding: clamp(24px, 3.4vh, 38px) clamp(34px, 4vw, 72px) 24px; }
+.archive-desk::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px solid rgba(80, 70, 58, 0.06); pointer-events: none; }
+
+.desk-grid { display: grid; width: 100%; height: calc(100% - 35px); min-height: 0; }
+.desk-caption { position: absolute; left: clamp(42px, 6vw, 110px); bottom: 16px; margin: 0; color: #776e61; font-family: "Songti SC", STSong, serif; font-size: 14px; letter-spacing: 0.03em; }
+
+.evidence-wall { position: relative; min-width: 0; }
+.paper-note,
+.paper-slip,
+.paper-sheet,
+.polaroid,
+.mini-polaroid {
+  border: 1px solid rgba(88, 76, 58, 0.11);
+  background: var(--archive-sheet);
+  box-shadow: var(--paper-shadow);
+}
+
+.paper-note,
+.paper-slip,
+.paper-sheet { position: relative; }
+
+.paperclip {
+  position: absolute;
+  top: -12px;
+  right: 24px;
+  width: 13px;
+  height: 38px;
+  border: 2px solid #7e7464;
+  border-radius: 9px;
+  transform: rotate(4deg);
+  opacity: 0.82;
+}
+
+.paperclip::after {
+  content: "";
+  position: absolute;
+  inset: 3px 2px 8px;
+  border: 1px solid #7e7464;
+  border-radius: 7px;
+}
+
+.paper-note small,
+.paper-slip small,
+.paper-sheet > small { color: var(--archive-green); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; }
+
+.handwritten-note {
+  width: 73%;
+  min-height: 82%;
+  padding: 28px 38px;
+  transform: rotate(-1.2deg);
+}
+
+.handwritten-note p {
+  margin: 26px 0 0;
+  color: #443f36;
+  font-family: "Kaiti SC", STKaiti, "Songti SC", serif;
+  font-size: clamp(16px, 1.25vw, 23px);
+  line-height: 2.05;
+  letter-spacing: 0.03em;
+}
+
+.handwritten-note strong { display: inline-block; margin-top: 20px; color: var(--archive-green); font-family: Georgia, serif; font-size: 20px; font-style: italic; font-weight: 500; border-bottom: 2px solid var(--archive-green); }
+
+.polaroid { margin: 0; padding: 12px 12px 24px; background: #f9f4e9; }
+.polaroid img,
+.mini-polaroid img { display: block; width: 100%; height: 100%; object-fit: cover; filter: saturate(0.82) sepia(0.07); }
+.polaroid figcaption { display: grid; gap: 2px; margin-top: 10px; color: #71695c; font-size: 10px; }
+.coffee-polaroid img { height: calc(100% - 42px); }
+.atlas-photo img { height: calc(100% - 24px); }
+
+.person-anchor { position: relative; z-index: 3; display: flex; align-items: center; flex-direction: column; text-align: center; }
+.portrait-ring { position: relative; padding: 8px; border: 1px solid #bba276; border-radius: 50%; background: #f4ecdc; box-shadow: 0 0 0 4px rgba(255,255,255,0.46), 0 8px 18px rgba(65, 53, 38, 0.16); }
+.portrait-ring::before,
+.portrait-ring::after { content: ""; position: absolute; top: 50%; width: 13px; height: 22px; border-top: 2px solid #d7a754; border-bottom: 2px solid #d7a754; transform: translateY(-50%); }
+.portrait-ring::before { left: -8px; }
+.portrait-ring::after { right: -8px; }
+.portrait-ring img { display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.person-anchor h1,
+.person-anchor h2 { margin: 14px 0 2px; font-family: "Songti SC", STSong, serif; font-size: 28px; font-weight: 650; }
+.person-anchor p { margin: 0; color: #675f54; font-size: 13px; }
+.person-anchor small { margin-top: 11px; padding-top: 8px; border-top: 1px solid var(--line); color: #898174; font-size: 10px; }
+
+.primary-button,
+.complete-button {
+  min-height: 40px;
+  padding: 0 26px;
+  border: 1px solid var(--archive-green);
+  border-radius: 3px;
+  background: var(--archive-green);
+  color: #f8f3e8;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.text-button { border: 0; background: transparent; color: #756e62; cursor: pointer; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+.decision-actions { display: flex; align-items: center; gap: 14px; }
+.decision-status,
+.form-status,
+.copy-status { min-height: 16px; margin: 8px 0 0; color: var(--archive-green); font-size: 11px; }
+
+/* P0 / P5 · 自我探索闭环 */
+.self-page-heading { position: absolute; z-index: 4; left: clamp(42px, 5vw, 92px); top: clamp(24px, 3vh, 38px); }
+.self-page-heading small { color: var(--archive-green); font-size: 10px; letter-spacing: .1em; }
+.self-page-heading h1 { margin: 8px 0 5px; font-family: "Songti SC", STSong, serif; font-size: clamp(36px, 3.5vw, 60px); font-weight: 620; }
+.self-page-heading p { margin: 0; color: #746d62; font-family: "Songti SC", STSong, serif; font-size: 14px; }
+.self-coordinate-map { position: relative; min-height: 0; }
+.self-start-screen > .self-coordinate-map { width: min(1180px, 76vw); height: calc(100% - 210px); margin: 108px auto 0; }
+.self-person { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); }
+.self-person .portrait-ring { width: clamp(170px, 13vw, 225px); height: clamp(170px, 13vw, 225px); }
+.self-person h2 { margin-top: 11px; font-size: 28px; }
+.self-person p { max-width: 245px; }
+.self-coordinate { position: absolute; width: min(270px, 23%); min-height: 126px; padding: 21px 25px; }
+.self-coordinate::after { content: ""; position: absolute; width: clamp(90px, 11vw, 170px); border-top: 1px solid var(--archive-green-soft); opacity: .76; }
+.self-coordinate small { color: #847b6e; font-size: 9px; letter-spacing: .08em; }
+.self-coordinate strong { display: block; margin-top: 10px; color: var(--archive-green); font-family: "Songti SC", STSong, serif; font-size: clamp(18px, 1.5vw, 24px); }
+.self-coordinate p { margin: 7px 0 0; color: #746c60; font-size: 10px; line-height: 1.55; }
+.coordinate-goal { left: 50%; top: 0; transform: translateX(-50%) rotate(-.6deg); }
+.coordinate-goal::after { left: 50%; top: 100%; width: 1px; height: clamp(58px, 8vh, 90px); border-top: 0; border-left: 1px solid var(--archive-green-soft); }
+.coordinate-ability { left: 4%; top: 45%; transform: rotate(.7deg); }
+.coordinate-ability::after { left: 100%; top: 50%; transform: rotate(11deg); transform-origin: left; }
+.coordinate-community { right: 4%; top: 45%; transform: rotate(-.5deg); }
+.coordinate-community::after { right: 100%; top: 50%; transform: rotate(-11deg); transform-origin: right; }
+.self-blindspot { position: absolute; left: 56%; bottom: 1%; padding: 16px 21px; border: 1px dashed rgba(117,107,92,.5); border-radius: 50%; color: #80786d; font-family: "Kaiti SC", STKaiti, serif; font-size: 12px; line-height: 1.55; transform: rotate(-4deg); }
+.self-blindspot strong { color: #49453d; font-weight: 500; }
+.self-opening-action { position: absolute; left: 50%; bottom: 28px; display: grid; justify-items: center; gap: 10px; transform: translateX(-50%); }
+.self-opening-action p { margin: 0; color: var(--archive-green); font-family: "Kaiti SC", STKaiti, serif; font-size: 20px; }
+
+.self-return-layout { display: grid; grid-template-columns: minmax(190px,.42fr) minmax(650px,1.5fr) minmax(320px,.72fr); gap: clamp(22px, 2.8vw, 50px); width: 100%; height: calc(100% - 175px); margin-top: 102px; }
+.return-people { display: grid; align-content: center; gap: 24px; }
+.return-people article { display: grid; grid-template-columns: 58px 1fr; align-items: center; column-gap: 12px; padding: 12px; border-bottom: 1px solid var(--line); }
+.return-people img { grid-row: 1 / 3; width: 58px; height: 58px; border: 5px solid #eee4d3; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px #bca578; }
+.return-people strong { font-family: "Songti SC", STSong, serif; font-size: 16px; }
+.return-people span { color: #756e62; font-size: 9px; line-height: 1.5; }
+.return-map { height: 100%; }
+.return-map .self-coordinate { width: min(230px, 28%); min-height: 112px; padding: 17px 20px; }
+.return-map .coordinate-goal { top: 0; }
+.return-map .coordinate-ability { left: 0; top: 48%; }
+.return-map .coordinate-community { right: 0; top: 48%; }
+.return-map .self-person { top: 49%; }
+.self-next-step { position: absolute; right: 2%; bottom: 1%; width: 255px; padding: 16px 20px; border: 1px dashed var(--archive-amber); transform: rotate(-.5deg); }
+.self-next-step small { color: var(--archive-amber); }
+.self-next-step strong { display: block; margin-top: 8px; font-family: "Songti SC", STSong, serif; font-size: 17px; }
+.self-return-decision { align-self: center; min-height: 70%; padding: 27px 30px; }
+.self-return-decision h2 { margin: 19px 0 22px; font-family: "Songti SC", STSong, serif; font-size: clamp(28px, 2.4vw, 42px); line-height: 1.25; }
+.self-evidence-list { display: grid; gap: 11px; margin-bottom: 24px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.self-evidence-list span { color: #635d53; font-size: 11px; line-height: 1.45; }
+.self-return-decision .decision-actions { flex-direction: column; align-items: stretch; }
+.self-return-decision .text-button { align-self: center; }
+.self-return-decision > p { color: #777064; font-size: 10px; }
+.self-return-footer { position: absolute; left: clamp(42px, 5vw, 92px); right: clamp(42px, 5vw, 92px); bottom: 18px; display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 24px; padding-top: 13px; border-top: 1px solid var(--line); }
+.self-return-footer > p:first-child { margin: 0; color: var(--archive-green); font-family: "Kaiti SC", STKaiti, serif; font-size: 18px; }
+
+/* P1 · 相遇 */
+.encounter-grid { grid-template-columns: minmax(460px, 0.92fr) minmax(260px, 0.58fr) minmax(420px, 0.86fr); align-items: center; gap: clamp(28px, 3.8vw, 72px); }
+.encounter-evidence { height: 100%; max-height: 690px; }
+.coffee-polaroid { position: absolute; z-index: 2; top: 8%; right: -6%; width: 46%; height: 58%; transform: rotate(3.2deg); }
+.encounter-person .portrait-ring { width: clamp(150px, 12vw, 220px); height: clamp(150px, 12vw, 220px); }
+.encounter-person::before { content: ""; position: absolute; z-index: -1; right: 55%; top: 40%; width: 270px; border-top: 1px solid #b89c70; transform: rotate(30deg); transform-origin: right; }
+.encounter-callouts { display: flex; flex-direction: column; justify-content: center; min-height: 78%; }
+.personal-coordinates { display: grid; gap: clamp(24px, 4vh, 48px); margin: 0; }
+.personal-coordinates div { position: relative; padding-left: 26px; }
+.personal-coordinates div::before { content: ""; position: absolute; left: 0; top: 9px; width: 8px; height: 8px; border-radius: 50%; background: var(--archive-green); }
+.personal-coordinates div::after { content: ""; position: absolute; right: 100%; top: 13px; width: clamp(70px, 8vw, 160px); border-top: 1px solid var(--archive-green-soft); transform: rotate(-25deg); transform-origin: right; opacity: 0.75; }
+.personal-coordinates dt { margin-bottom: 5px; color: #7a7266; font-size: 10px; letter-spacing: 0.08em; }
+.personal-coordinates dd { margin: 0 0 5px; font-family: "Songti SC", STSong, serif; font-size: clamp(18px, 1.5vw, 25px); font-weight: 700; }
+.personal-coordinates span { color: #746d61; font-size: 12px; line-height: 1.6; }
+.archive-capture-form { margin: 38px 0 0 26px; }
+
+/* P2 · 证据 */
+.profile-grid { grid-template-columns: minmax(420px, 0.92fr) minmax(280px, 0.66fr) minmax(390px, 0.86fr); align-items: center; gap: clamp(32px, 5vw, 88px); }
+.profile-evidence-wall { display: grid; align-content: center; gap: 17px; height: 100%; }
+.evidence-slip { width: 92%; min-height: 125px; padding: 20px 28px; transform: rotate(-0.6deg); }
+.evidence-slip:nth-child(2) { margin-left: 20px; transform: rotate(0.5deg); }
+.evidence-slip:nth-child(3) { margin-left: 6px; transform: rotate(-0.2deg); }
+.evidence-slip p { margin: 13px 0 0; font-family: "Kaiti SC", STKaiti, serif; font-size: 16px; line-height: 1.75; }
+.evidence-slip p strong { display: inline-block; margin-right: 9px; color: var(--archive-green); font-family: inherit; }
+.evidence-slip p span { color: #443f37; }
+.evidence-slip footer { margin-top: 10px; color: #8a8276; font-size: 9px; }
+.profile-person .portrait-ring { width: clamp(155px, 13vw, 230px); height: clamp(155px, 13vw, 230px); }
+.profile-person::before { content: ""; position: absolute; z-index: -1; left: -60%; right: -55%; top: 39%; border-top: 1px solid #b89c70; }
+.evidence-bridge { position: absolute; left: -68%; top: 26%; width: 58%; height: 50%; }
+.evidence-bridge i { position: absolute; right: 0; width: 7px; height: 7px; border-radius: 50%; background: var(--archive-amber); }
+.evidence-bridge i:nth-child(1) { top: 8%; }
+.evidence-bridge i:nth-child(2) { top: 47%; }
+.evidence-bridge i:nth-child(3) { top: 87%; }
+.judgment-area { display: grid; justify-items: center; gap: 10px; }
+.judgment-slip { width: min(100%, 340px); min-height: 155px; padding: 24px 30px; }
+.judgment-slip h2 { margin: 18px 0 8px; font-family: "Songti SC", STSong, serif; font-size: 24px; font-weight: 650; }
+.judgment-slip p { color: #766e62; font-size: 12px; }
+.judgment-before { opacity: 0.74; transform: rotate(0.8deg); }
+.judgment-after { border-color: rgba(23, 79, 56, 0.34); transform: rotate(-0.7deg); }
+.judgment-after strong { display: block; margin-top: 14px; color: var(--archive-green); font-family: "Songti SC", STSong, serif; font-size: 24px; }
+.judgment-arrow { color: var(--archive-amber); font-size: 20px; }
+
+/* P3 · 关系 */
+.atlas-screen { position: relative; }
+.atlas-layout { display: grid; grid-template-columns: minmax(390px, 0.86fr) minmax(760px, 1.7fr); gap: clamp(24px, 3vw, 54px); width: 100%; height: calc(100% - 35px); min-height: 0; }
+.atlas-evidence { display: grid; grid-template-columns: 1fr 0.9fr; grid-template-rows: auto 1.2fr 0.82fr 0.82fr; gap: 13px; align-content: center; min-height: 0; padding: 10px; background: rgba(218, 205, 181, 0.28); box-shadow: inset 0 0 0 1px rgba(88, 76, 58, 0.08); }
+.atlas-evidence header { grid-column: 1 / -1; }
+.atlas-evidence header small { color: var(--archive-green); font-size: 10px; }
+.atlas-evidence header h1 { margin: 4px 0 0; font-family: "Songti SC", STSong, serif; font-size: 25px; }
+.atlas-photo { grid-column: 2; grid-row: 2; width: 100%; height: 100%; padding: 8px 8px 20px; transform: rotate(2.8deg); }
+.atlas-note { grid-column: 1 / -1; padding: 17px 22px; min-height: 110px; }
+.atlas-note:nth-of-type(1) { grid-row: 3; transform: rotate(-0.5deg); }
+.atlas-note:nth-of-type(2) { grid-row: 4; transform: rotate(0.4deg); }
+.atlas-note p { margin: 9px 0 0; font-family: "Kaiti SC", STKaiti, serif; font-size: 14px; line-height: 1.65; }
+.atlas-note footer { margin-top: 7px; color: #887f72; font-size: 9px; }
+.atlas-canvas { position: relative; min-height: 0; }
+.relationship-map { position: absolute; inset: 0 0 142px; overflow: hidden; }
+.relationship-map canvas,
+.map-node-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-node { position: absolute; left: calc(var(--map-x) * 100%); top: calc(var(--map-y) * 100%); z-index: 2; transform: translate(-50%, -50%); border: 0; background: transparent; cursor: pointer; }
+.map-node small,
+.map-node strong { display: block; }
+.map-node small { color: #777064; font-size: 9px; letter-spacing: 0.05em; }
+.map-node strong { margin-top: 5px; color: #36342e; font-family: "Songti SC", STSong, serif; font-size: 17px; white-space: nowrap; }
+.map-node-person { width: clamp(124px, 10vw, 174px); }
+.map-node-person img { display: block; width: clamp(105px, 8.4vw, 150px); height: clamp(105px, 8.4vw, 150px); margin: 0 auto 8px; border: 8px solid #eee4d3; border-radius: 50%; object-fit: cover; box-shadow: 0 0 0 1px #bca578, 0 7px 16px rgba(66,54,39,.17); }
+.map-node-person small { order: 3; }
+.map-node-person strong { font-size: 23px; }
+.map-node-theme,
+.map-node-evidence,
+.map-node-pending { min-width: 142px; max-width: 190px; padding: 15px 20px; border: 1px solid rgba(23,79,56,.36); background: rgba(248, 242, 230, 0.92); box-shadow: 0 8px 18px rgba(64,52,36,.08); text-align: left; }
+.map-node-theme { border: 0; background: transparent; box-shadow: none; }
+.map-node-theme::before { content: ""; position: absolute; left: 4px; top: 21px; width: 7px; height: 7px; border-radius: 50%; background: var(--archive-green); }
+.map-node-theme small,
+.map-node-theme strong { padding-left: 2px; }
+.map-node-pending { border: 1px dashed var(--archive-amber); }
+.map-node[aria-pressed="true"] { filter: brightness(0.98); }
+.map-node-person[aria-pressed="true"] img { box-shadow: 0 0 0 2px var(--archive-amber), 0 8px 18px rgba(64,52,36,.17); }
+.atlas-detail { position: absolute; left: 2%; right: 2%; bottom: 0; display: grid; grid-template-columns: 0.8fr 1.5fr 0.8fr; align-items: center; gap: 20px; min-height: 126px; padding: 16px 22px; border: 1px solid var(--line); background: rgba(248,242,230,.72); }
+.atlas-detail > div:first-child p { margin: 0; color: var(--archive-green); font-size: 9px; }
+.atlas-detail h2 { margin: 4px 0; font-family: "Songti SC", STSong, serif; font-size: 20px; }
+.atlas-detail > div:first-child > p:last-child { color: #746c60; font-size: 10px; }
+.atlas-decision-story { display: grid; grid-template-columns: repeat(3, 1fr); }
+.atlas-decision-story article { min-height: 72px; padding: 0 18px; border-left: 1px solid var(--line); }
+.atlas-decision-story h3 { margin: 0 0 8px; color: var(--archive-green); font-size: 10px; }
+.atlas-decision-story p { margin: 0; color: #6f685d; font-size: 10px; line-height: 1.55; }
+.atlas-detail .decision-actions { justify-content: flex-end; flex-wrap: wrap; }
+.atlas-detail .primary-button { min-height: 35px; width: 100%; padding: 0 14px; }
+.atlas-detail .decision-status { grid-column: 3; text-align: right; }
+
+/* P4 · 下一步 */
+.action-grid { grid-template-columns: minmax(300px, 0.68fr) minmax(610px, 1.42fr) minmax(390px, 0.82fr); align-items: center; gap: clamp(26px, 3.2vw, 58px); height: calc(100% - 95px); }
+.action-evidence { display: grid; align-content: center; gap: 14px; height: 100%; }
+.action-evidence > small { color: var(--archive-green); font-size: 10px; font-weight: 700; }
+.mini-polaroid { width: 80%; padding: 8px 8px 18px; transform: rotate(-1.2deg); }
+.mini-polaroid img { height: 120px; }
+.mini-polaroid figcaption { margin-top: 7px; color: #766f64; font-size: 9px; }
+.mini-slip { width: 92%; padding: 16px 20px; }
+.mini-slip p { margin: 0; font-family: "Kaiti SC", STKaiti, serif; font-size: 13px; line-height: 1.65; }
+.mini-slip footer { margin-top: 7px; color: #81796d; font-size: 9px; }
+.action-relationship { display: grid; grid-template-columns: 1fr minmax(170px, .75fr) 1fr; align-items: center; gap: 18px; }
+.compact-person .portrait-ring { width: clamp(135px, 10.5vw, 190px); height: clamp(135px, 10.5vw, 190px); }
+.compact-person h2 { font-size: 24px; }
+.relationship-thread { display: grid; justify-items: center; gap: 18px; }
+.relationship-thread > span { width: 100%; border-top: 1px solid var(--archive-green-soft); }
+.relation-slip { width: 100%; padding: 15px; color: #5f594f; font-family: "Songti SC", STSong, serif; font-size: 12px; line-height: 1.65; text-align: center; transform: rotate(-0.5deg); }
+.action-sheet { min-height: 82%; padding: 28px 34px; }
+.action-sheet h1 { margin: 20px 0 28px; font-family: "Songti SC", STSong, serif; font-size: clamp(29px, 2.4vw, 43px); line-height: 1.28; font-weight: 650; }
+.action-card-top { display: flex; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--line); color: var(--archive-green); font-size: 10px; }
+.action-sheet > p { color: #625c52; font-size: 12px; line-height: 1.65; }
+.action-sheet blockquote { margin: 19px 0; padding: 14px 16px; border-left: 2px solid #9caa9f; background: rgba(232, 222, 204, .55); color: #534e45; font-family: "Kaiti SC", STKaiti, serif; font-size: 13px; line-height: 1.7; }
+.connection-result { color: var(--archive-amber) !important; font-weight: 700; }
+.action-sheet .primary-button { width: 100%; }
+.action-sheet .copy-button { display: block; margin: 10px auto 0; }
+.archive-stamp { position: absolute; right: 24px; bottom: 84px; display: grid; place-items: center; width: 78px; height: 78px; border: 3px double var(--archive-green); border-radius: 50%; color: var(--archive-green); font-family: "Songti SC", STSong, serif; font-size: 18px; font-weight: 700; transform: rotate(-12deg) scale(.85); opacity: 0; transition: opacity 260ms ease, transform 260ms var(--ease-archive); }
+.action-sheet.is-completed .archive-stamp { opacity: .78; transform: rotate(-12deg) scale(1); }
+.action-footer { position: absolute; left: clamp(34px, 4vw, 72px); right: clamp(34px, 4vw, 72px); bottom: 12px; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 28px; min-height: 70px; padding-top: 12px; border-top: 1px solid var(--line); }
+.asset-summary { display: flex; gap: 14px; color: #756e62; font-size: 10px; }
+.asset-summary strong { color: var(--archive-green); }
+.self-update-inline { display: flex; align-items: center; gap: 10px; color: #776f64; font-size: 10px; }
+.self-update-inline strong { color: var(--archive-green); font-family: "Songti SC", STSong, serif; font-size: 15px; }
+.self-update-inline p { margin: 0; }
+.final-caption { margin: 0; color: var(--archive-green); font-family: "Kaiti SC", STKaiti, serif; font-size: 24px; opacity: 0; transform: translateY(8px); transition: opacity 420ms ease, transform 420ms var(--ease-archive); }
+.final-caption[aria-hidden="false"] { opacity: 1; transform: translateY(0); }
+.action-line { justify-self: end; margin: 0; color: #746d62; font-family: "Kaiti SC", STKaiti, serif; font-size: 15px; }
+.restart-button { justify-self: end; }
+
+/* Intro */
+.intro-scene { position: absolute; inset: 0; z-index: 80; overflow: hidden; background: var(--archive-paper); }
+.overload-montage { position: absolute; inset: 7% 42% 7% 5%; }
+.paper-fragment { position: absolute; padding: 18px 22px; border: 1px solid rgba(88,76,58,.12); background: var(--archive-sheet); box-shadow: var(--paper-shadow); color: #4e493f; font-family: "Kaiti SC", STKaiti, serif; opacity: 0; }
+.fragment-photo { left: 8%; top: 4%; width: 43%; padding: 10px 10px 22px; transform: rotate(-4deg); }
+.fragment-photo img { display: block; width: 100%; height: 185px; object-fit: cover; }
+.fragment-photo span { display: block; margin-top: 8px; }
+.fragment-name:nth-of-type(2) { left: 54%; top: 11%; transform: rotate(3deg); }
+.fragment-chat { left: 24%; top: 47%; transform: rotate(-2deg); }
+.fragment-name:nth-of-type(4) { left: 60%; top: 51%; transform: rotate(2deg); }
+.fragment-note { left: 7%; bottom: 5%; transform: rotate(1deg); }
+.fragment-name:nth-of-type(6) { right: 2%; bottom: 3%; transform: rotate(-3deg); }
+.paper-fragment small { display: block; margin-bottom: 8px; color: var(--archive-green); font-family: inherit; font-size: 10px; }
+.overload-copy { position: absolute; right: 8%; top: 50%; width: 31%; transform: translateY(-50%); }
+.overload-copy p { color: var(--archive-green); font-size: 11px; letter-spacing: .13em; }
+.overload-copy h1 { margin: 22px 0; font-family: "Songti SC", STSong, serif; font-size: clamp(48px, 5.3vw, 88px); line-height: 1.22; font-weight: 620; }
+.overload-copy span { color: #766f64; font-family: "Songti SC", STSong, serif; font-size: 16px; }
+
+.safety-note { display: grid; place-items: center; border-top: 1px solid rgba(80,70,58,.08); background: var(--archive-paper); color: #968d7f; font-size: 9px; letter-spacing: .06em; }
+
+@keyframes paper-in { from { opacity: 0; transform: translateY(20px) rotate(var(--paper-rotation, 0deg)); } to { opacity: 1; transform: translateY(0) rotate(var(--paper-rotation, 0deg)); } }
+@keyframes portrait-in { from { opacity: 0; transform: scale(.86); } to { opacity: 1; transform: scale(1); } }
+@keyframes node-in { from { opacity: 0; transform: translate(-50%, -50%) scale(.84); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@keyframes desk-pan { from { opacity: .65; transform: scale(1.025) translateX(10px); } to { opacity: 1; transform: scale(1) translateX(0); } }
+
+.workspace-screen.is-active { animation: desk-pan 420ms var(--ease-archive) both; }
+[data-demo-mode="auto"] .step-nav { pointer-events: none; }
+[data-step-target]:not([aria-current="step"]) { opacity: .72; }
+[data-demo-phase="capture-fill"] .personal-coordinates div { animation: paper-in 360ms var(--ease-archive) both; }
+[data-demo-phase="overload-enter"] .paper-fragment { animation: paper-in 480ms var(--ease-archive) forwards; }
+[data-demo-phase="overload-enter"] .paper-fragment:nth-child(2) { animation-delay: 100ms; }
+[data-demo-phase="overload-enter"] .paper-fragment:nth-child(3) { animation-delay: 190ms; }
+[data-demo-phase="overload-enter"] .paper-fragment:nth-child(4) { animation-delay: 280ms; }
+[data-demo-phase="overload-enter"] .paper-fragment:nth-child(5) { animation-delay: 370ms; }
+[data-demo-phase="overload-enter"] .paper-fragment:nth-child(6) { animation-delay: 460ms; }
+[data-demo-phase="capture-enter"] .handwritten-note,
+[data-demo-phase="capture-enter"] .coffee-polaroid,
+[data-demo-phase="evidence-organize"] .evidence-slip,
+[data-demo-phase="profile-enter"] .judgment-slip,
+[data-demo-phase="action-enter"] .action-sheet { animation: paper-in 430ms var(--ease-archive) both; }
+[data-demo-phase="self-start-enter"] .self-coordinate,
+[data-demo-phase="self-return-enter"] .self-coordinate,
+[data-demo-phase="self-return-enter"] .self-return-decision { animation: paper-in 360ms var(--ease-archive) both; }
+[data-demo-phase="capture-enter"] .encounter-person,
+[data-demo-phase="profile-enter"] .profile-person { animation: portrait-in 520ms var(--ease-archive) both; }
+[data-demo-phase="connection-enter"] .map-node,
+[data-demo-phase="map-growth"] .map-node { animation: node-in 420ms var(--ease-archive) both; }
+[data-demo-phase="map-growth"] .map-node:nth-child(2) { animation-delay: 70ms; }
+[data-demo-phase="map-growth"] .map-node:nth-child(3) { animation-delay: 140ms; }
+[data-demo-phase="map-growth"] .map-node:nth-child(4) { animation-delay: 210ms; }
+[data-demo-phase="map-growth"] .map-node:nth-child(5) { animation-delay: 280ms; }
+[data-demo-phase="map-growth"] .map-node:nth-child(6) { animation-delay: 350ms; }
+[data-demo-phase="map-growth"] .map-node:nth-child(7) { animation-delay: 420ms; }
+
+@media (max-width: 1400px) {
+  .topbar { grid-template-columns: 205px minmax(580px, 1fr) 205px; padding: 0 24px; }
+  .archive-desk { padding-left: 36px; padding-right: 36px; }
+  .encounter-grid { grid-template-columns: minmax(390px,.9fr) minmax(220px,.56fr) minmax(340px,.8fr); gap: 36px; }
+  .profile-grid { grid-template-columns: minmax(360px,.9fr) minmax(230px,.62fr) minmax(330px,.8fr); gap: 42px; }
+  .atlas-layout { grid-template-columns: minmax(330px,.78fr) minmax(680px,1.65fr); }
+  .action-grid { grid-template-columns: minmax(250px,.58fr) minmax(520px,1.35fr) minmax(330px,.76fr); gap: 32px; }
+  .self-return-layout { grid-template-columns: 180px minmax(570px,1.35fr) 300px; gap: 24px; }
+  .action-footer { left: 36px; right: 36px; }
+}
+
+@media (max-width: 1100px) {
+  html,
+  body { overflow: auto; }
+  .app-shell { min-width: 1000px; }
+  .topbar { grid-template-columns: 210px 1fr 190px; }
+  .step-nav { grid-template-columns: repeat(6, 88px); }
+  .archive-desk { overflow: auto; }
+  .desk-grid,
+  .atlas-layout { min-width: 920px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after { scroll-behavior: auto !important; animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
+}
+</style>
+      <!-- 单文件离线版：无需本地服务器，不连接外部服务。 -->
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="brand" aria-label="LinkLog 关系工作台">
+          <span class="brand-monogram" aria-hidden="true">LL</span>
+          <span class="brand-copy"><strong>LinkLog</strong><small>关系工作台</small></span>
+        </div>
+
+        <div class="demo-controls">
+          <button class="quiet-button" type="button" data-prev disabled>上一步</button>
+          <nav class="step-nav" aria-label="演示步骤">
+            <button type="button" data-step-target="self-start" aria-current="step"><span>01</span>自我</button>
+            <button type="button" data-step-target="capture"><span>02</span>相遇</button>
+            <button type="button" data-step-target="profile"><span>03</span>证据</button>
+            <button type="button" data-step-target="connection"><span>04</span>关系</button>
+            <button type="button" data-step-target="action"><span>05</span>行动</button>
+            <button type="button" data-step-target="self-return"><span>06</span>回到自我</button>
+          </nav>
+          <button class="quiet-button" type="button" data-next>下一步</button>
+        </div>
+
+        <div class="topbar-meta">
+          <span class="data-badge">演示数据</span>
+          <button class="auto-button" type="button" data-auto aria-pressed="false">
+            <span data-auto-state>自动演示</span>
+            <small data-auto-progress>00:00 / 00:27</small>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="workspace-screen archive-desk self-start-screen is-active" data-archive-desk data-screen="self-start" aria-hidden="false">
+          <header class="self-page-heading"><small>P0 · 自我探索</small><h1>我的坐标</h1><p>认识别人之前，先知道自己正在走向哪里。</p></header>
+          <div class="self-coordinate-map" data-self-coordinate-map>
+            <article class="paper-slip self-coordinate coordinate-goal"><small>当前命题</small><strong>验证真实需求</strong><p>通过真实对话与实践，验证哪些问题真正值得解决。</p></article>
+            <article class="paper-slip self-coordinate coordinate-ability"><small>已有能力</small><strong>增长与连接</strong><p>把产品能力与运营经验，沉淀为可复用的方法与连接。</p></article>
+            <article class="paper-slip self-coordinate coordinate-community"><small>希望靠近</small><strong>长期共创</strong><p>寻找价值观一致、愿意共同打磨问题的伙伴。</p></article>
+            <section class="person-anchor self-person" data-portrait-node>
+              <div class="portrait-ring"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="1" alt="我的脱敏演示肖像" /></div>
+              <h2>我</h2><p>正在探索自己与世界的连接方式</p>
+            </section>
+            <aside class="self-blindspot">还不知道：<br /><strong>谁能让我看见盲区</strong></aside>
+          </div>
+          <div class="self-opening-action"><p>我带着问题，走进每一次相遇。</p><button class="primary-button" type="button" data-self-start-next>开始记录</button></div>
+        </section>
+
+        <section class="workspace-screen archive-desk capture-screen" data-archive-desk data-screen="capture" aria-hidden="true" hidden>
+          <div class="desk-grid encounter-grid">
+            <section class="evidence-wall encounter-evidence" data-evidence-wall>
+              <article class="paper-note handwritten-note">
+                <span class="paperclip" aria-hidden="true"></span>
+                <small>来自昨天 · Coffee Chat</small>
+                <p>聊到产品冷启动的难点，<br />林屿提到他们正在做一场<br />线下活动，想找到第一批<br />真正愿意试用的人。</p>
+                <p>他也提到希望能认识在<br />活动运营上有经验的人。</p>
+                <strong>Coffee Chat</strong>
+              </article>
+              <figure class="polaroid coffee-polaroid">
+                <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="2" alt="Coffee Chat 现场的一杯咖啡" />
+                <figcaption><time>2026-07-20 · 10:32</time><span>Coffee Chat @ Seesaw Cafe</span></figcaption>
+              </figure>
+            </section>
+
+            <section class="person-anchor encounter-person" data-portrait-node>
+              <div class="portrait-ring"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="3" alt="林屿的脱敏演示肖像" /></div>
+              <h1>林屿</h1>
+              <p>AI 产品 Builder</p>
+              <small>初次记录 · 2026-07-20</small>
+            </section>
+
+            <section class="encounter-callouts" aria-label="这次相遇留下的三条事实">
+              <dl class="personal-coordinates" data-personal-coordinates>
+                <div><dt>正在打造</dt><dd data-coordinate-goal>验证 AI 产品</dd><span>寻找第一批真实用户，验证核心价值。</span></div>
+                <div><dt>正在寻找</dt><dd data-coordinate-theme>真实反馈</dd><span>希望认识有活动运营经验的伙伴。</span></div>
+                <div><dt>为什么记下</dt><dd data-coordinate-boundary>先证据，后判断</dd><span>一次真实交流，值得留下未来的入口。</span></div>
+              </dl>
+              <form class="capture-form archive-capture-form" novalidate>
+                <label class="sr-only" for="person-name">TA 是谁？</label>
+                <input class="sr-only-control" id="person-name" name="person-name" value="林屿" autocomplete="off" />
+                <fieldset class="sr-only-control"><legend>怎么认识的？</legend><label><input type="radio" name="source" value="AI Builder Coffee Chat" checked />Coffee Chat</label></fieldset>
+                <label class="sr-only" for="connection-note">你想记住什么？</label>
+                <textarea class="sr-only-control" id="connection-note" name="connection-note">正在寻找第一批真实用户；关注产品冷启动；我们聊了活动后的关系沉淀。</textarea>
+                <small class="field-error" data-error="name"></small><small class="field-error" data-error="note"></small>
+                <button class="primary-button" type="submit" data-save-signal>存入关系档案</button>
+                <p class="form-status" data-capture-status role="status"></p>
+              </form>
+            </section>
+          </div>
+          <p class="desk-caption">一段真实交流，留下可以继续使用的关系证据。</p>
+        </section>
+
+        <section class="workspace-screen archive-desk profile-screen" data-archive-desk data-screen="profile" aria-hidden="true" hidden>
+          <div class="desk-grid profile-grid">
+            <section class="evidence-wall profile-evidence-wall" data-evidence-wall data-evidence-effects>
+              <article class="paper-slip evidence-slip voice-slip">
+                <span class="paperclip" aria-hidden="true"></span><small>来源 1 · 直接证据</small>
+                <p data-profile-evidence>林屿：我们聊了活动后的关系沉淀，希望持续运营第一批真实用户。</p>
+                <footer>语音转写 · 2026-07-20</footer>
+              </article>
+              <article class="paper-slip evidence-slip chat-slip" data-evidence-effect data-kind="confirm">
+                <span class="paperclip" aria-hidden="true"></span><small>来源 2 · 相关证据</small>
+                <p><strong>确认</strong><span>产品冷启动是真问题</span></p>
+                <footer>聊天摘要 · 2026-07-20</footer>
+              </article>
+              <article class="paper-slip evidence-slip note-slip" data-evidence-effect data-kind="correct">
+                <span class="paperclip" aria-hidden="true"></span><small>来源 3 · 现场记录</small>
+                <p><strong>修正</strong><span>先找真实用户，不再继续堆功能</span></p>
+                <footer>Coffee Chat · 2026-07-20</footer>
+              </article>
+              <article class="sr-only" data-evidence-effect data-kind="add"><strong>新增</strong><span>林屿可能成为长期共创者</span></article>
+            </section>
+
+            <section class="person-anchor profile-person" data-portrait-node>
+              <div class="portrait-ring"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="3" alt="林屿的脱敏演示肖像" /></div>
+              <h1>林屿</h1><p>AI 产品 Builder</p><small>人物档案 · 第 2 次更新</small>
+              <div class="evidence-bridge" data-evidence-bridge aria-label="三条证据正在更新人物档案"><i></i><i></i><i></i></div>
+              <dl class="profile-moments sr-only" data-profile-moments>
+                <div><dt>我们做过什么</dt><dd data-profile-history></dd></div>
+                <div><dt>TA 如何看见我</dt><dd data-profile-reflection></dd></div>
+                <div><dt>下一次值得发生什么</dt><dd data-profile-next></dd></div>
+              </dl>
+            </section>
+
+            <section class="judgment-area">
+              <article class="paper-slip judgment-slip judgment-before" data-judgment-slip>
+                <small>原判断</small><h2 data-before-goal>完善产品</h2><p>尚未验证，先保持观察。</p>
+                <dl class="sr-only"><div><dt>关系</dt><dd data-before-relationship></dd></div><div><dt>行动</dt><dd data-before-action></dd></div></dl>
+              </article>
+              <span class="judgment-arrow" aria-hidden="true">↓</span>
+              <article class="paper-slip judgment-slip judgment-after" data-judgment-slip>
+                <small>新判断</small><h2 data-after-goal>验证第一批真实用户</h2><strong>先验证真实需求</strong>
+                <dl class="sr-only"><div><dt>关系</dt><dd data-after-relationship></dd></div><div><dt>行动</dt><dd data-after-action></dd></div></dl>
+              </article>
+              <div class="decision-actions">
+                <button class="primary-button" type="button" data-profile-confirm>确认新的判断</button>
+                <button class="text-button" type="button" data-profile-hold>暂不更新</button>
+              </div>
+              <p class="decision-status" data-profile-status>证据提出建议，但由你确认。</p>
+            </section>
+          </div>
+          <p class="desk-caption">不是替你判断，而是让判断有证据可循。</p>
+        </section>
+
+        <section class="workspace-screen archive-desk atlas-screen" data-archive-desk data-screen="connection" aria-hidden="true" hidden>
+          <div class="atlas-layout">
+            <section class="evidence-wall atlas-evidence" data-evidence-wall data-atlas-evidence aria-labelledby="atlas-evidence-title">
+              <header><small>来自昨天 · Coffee Chat</small><h1 id="atlas-evidence-title">关系证据</h1></header>
+              <figure class="polaroid atlas-photo"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="2" alt="Coffee Chat 现场" data-event-photo /><figcaption>2026-07-20 · 10:32</figcaption></figure>
+              <article class="paper-slip atlas-note"><span class="paperclip" aria-hidden="true"></span><small>来源 1 · 直接证据</small><p>林屿：我们聊了活动后的关系沉淀，希望持续运营第一批真实用户。</p><footer>语音转写 · 2026-07-20</footer></article>
+              <article class="paper-slip atlas-note"><span class="paperclip" aria-hidden="true"></span><small>来源 2 · 相关证据</small><p>林屿：在找懂活动运营的人，一起优化冷启动策略。</p><footer>聊天摘要 · 2026-07-20</footer></article>
+              <img class="field-note-source sr-only" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="4" alt="Coffee Chat 现场记录" data-field-note />
+              <article class="sr-only atlas-chat-excerpt"><h3>聊天摘录</h3><p>讨论活动后的关系沉淀与真实用户反馈。</p></article>
+              <aside class="sr-only"><h3>资料来源</h3><p>AI Builder Coffee Chat · 2026-07-12</p></aside>
+            </section>
+
+            <section class="atlas-canvas">
+              <div class="relationship-map" data-relationship-map aria-label="林屿的人脉关系证据图">
+                <canvas data-map-canvas aria-hidden="true"></canvas>
+                <div class="map-node-layer" data-map-nodes></div>
+                <p class="sr-only">人物、主题、证据与一条待确认连接。节点可用 Tab 键选择。</p>
+              </div>
+              <aside class="atlas-detail" data-map-detail>
+                <div><p data-map-eyebrow>待确认连接</p><h2 data-map-title>林屿 × 苏禾</h2><p data-map-summary>建议先分别询问双方，再决定是否介绍。</p></div>
+                <div class="atlas-decision-story">
+                  <article><h3>为什么推荐</h3><p data-map-why>共同关注活动后的关系沉淀。</p></article>
+                  <article><h3>还不确定什么</h3><p data-map-unknown>双方是否愿意认识。</p></article>
+                  <article><h3>下一步只做什么</h3><p data-map-next>先分别询问双方。</p></article>
+                </div>
+                <ul class="sr-only" data-map-facts></ul>
+                <div class="decision-actions" data-map-decision-actions><button class="primary-button" type="button" data-connection-ask>先询问双方</button><button class="text-button" type="button" data-connection-ignore>忽略这次建议</button></div>
+                <p class="decision-status" data-connection-status>等待你的决定</p>
+              </aside>
+            </section>
+          </div>
+          <p class="desk-caption">从一段交流，看见一条值得确认的关系路径。</p>
+        </section>
+
+        <section class="workspace-screen archive-desk action-screen" data-archive-desk data-screen="action" aria-hidden="true" hidden>
+          <div class="desk-grid action-grid">
+            <section class="evidence-wall action-evidence" data-evidence-wall>
+              <small>本次相遇的证据</small>
+              <figure class="mini-polaroid"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="2" alt="Coffee Chat 现场" /><figcaption>Coffee Chat · 07-20</figcaption></figure>
+              <article class="paper-slip mini-slip"><p>我们聊了活动后的关系沉淀，希望持续运营第一批真实用户。</p><footer>语音转写</footer></article>
+              <article class="paper-slip mini-slip"><p>在找懂活动运营的人，一起优化冷启动策略。</p><footer>聊天摘要</footer></article>
+            </section>
+
+            <section class="action-relationship" aria-label="林屿与苏禾的待确认关系">
+              <div class="person-anchor compact-person" data-portrait-node><div class="portrait-ring"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="3" alt="林屿的脱敏演示肖像" /></div><h2>林屿</h2><p>AI 产品 Builder</p></div>
+              <div class="relationship-thread"><span></span><article class="paper-slip relation-slip">共同关注产品冷启动与关系沉淀<br />可能形成能力互补的长期合作</article></div>
+              <div class="person-anchor compact-person" data-portrait-node><div class="portrait-ring"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="5" alt="苏禾的脱敏演示肖像" /></div><h2>苏禾</h2><p>社群产品运营</p></div>
+            </section>
+
+            <section class="paper-sheet action-sheet" data-action-sheet data-action-card>
+              <span class="paperclip" aria-hidden="true"></span><small>本周跟进</small>
+              <h1>让这段关系<br />拥有下一步</h1>
+              <div class="action-card-top"><span>建议动作</span><time>本周五</time></div>
+              <p>分别询问双方是否愿意认识，再决定是否介绍。</p>
+              <blockquote data-message-text>上次聊到活动后的关系沉淀，我想到一位也在做社群验证的伙伴。若你愿意，我可以先帮你们互相问问。</blockquote>
+              <p class="connection-result" data-connection-result>双方待确认</p>
+              <button class="primary-button complete-button" type="button" data-complete-action aria-pressed="false">标记已安排</button>
+              <button class="text-button copy-button" type="button" data-copy-message>复制跟进话术</button><p class="copy-status" data-copy-status></p>
+              <div class="archive-stamp" aria-hidden="true">已安排</div>
+            </section>
+          </div>
+
+          <section class="action-footer">
+            <div class="asset-summary">
+              <span>人物档案 <strong data-asset-profiles>1</strong></span><span>关系建议 <strong data-asset-suggestions>1</strong></span><span>行动计划 <strong data-asset-actions>0</strong></span>
+            </div>
+            <p class="action-line" data-action-line>完成一次跟进，让关系继续生长。</p>
+          </section>
+        </section>
+
+        <section class="workspace-screen archive-desk self-return-screen" data-archive-desk data-screen="self-return" aria-hidden="true" hidden>
+          <header class="self-page-heading"><small>P5 · 回到自我</small><h1>关系，让坐标变得更清楚</h1><p>一段有质量的连接，会带回一次自我认知的升级。</p></header>
+          <div class="self-return-layout">
+            <section class="return-people" aria-label="带回证据的关系人物">
+              <article><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="3" alt="林屿的脱敏演示肖像" /><strong>林屿</strong><span>你把问题讲得很清楚。</span></article>
+              <article><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="5" alt="苏禾的脱敏演示肖像" /><strong>苏禾</strong><span>你能把讨论带向行动。</span></article>
+            </section>
+            <div class="self-coordinate-map return-map" data-self-coordinate-map>
+              <article class="paper-slip self-coordinate coordinate-goal"><small>被确认</small><strong>把交流变成行动</strong><p>一段交流不再停留在记录里。</p></article>
+              <article class="paper-slip self-coordinate coordinate-ability"><small>被修正</small><strong>先验证，不等完整</strong><p>真实反馈比继续堆功能更重要。</p></article>
+              <article class="paper-slip self-coordinate coordinate-community"><small>新方向</small><strong>连接产品与社群</strong><p>我的价值也可以发生在关系之间。</p></article>
+              <section class="person-anchor self-person" data-portrait-node>
+                <div class="portrait-ring"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="1" alt="我的脱敏演示肖像" /></div>
+                <h2>我</h2><p>正在探索自己与世界的连接方式</p>
+              </section>
+              <article class="paper-slip self-next-step"><small>新的下一步</small><strong data-self-next>完成 2 次真实用户访谈</strong></article>
+            </div>
+            <section class="paper-sheet self-return-decision">
+              <small>关系如何更新了我</small>
+              <h2 data-self-after>先验证真实需求</h2>
+              <span class="sr-only" data-self-before>带着问题去相遇</span>
+              <div class="self-evidence-list" data-self-evidence><span></span><span></span><span></span></div>
+              <div class="decision-actions"><button class="primary-button" type="button" data-self-update-confirm>确认更新我的坐标</button><button class="text-button" type="button" data-self-update-hold>暂不更新</button></div>
+              <p data-self-update-status>证据提出建议，但不替我下结论。</p>
+            </section>
+          </div>
+          <footer class="self-return-footer"><p>人脉地图，不只告诉我认识谁；也告诉我正在成为谁。</p><p class="final-caption" data-final-caption aria-hidden="true">每一次相遇，都值得继续生长。</p><button class="text-button restart-button" type="button" data-restart-closing>重新演示</button></footer>
+        </section>
+
+        <section class="intro-scene" data-intro-scene hidden aria-hidden="true">
+          <div class="overload-montage" data-overload-montage aria-hidden="true">
+            <article class="paper-fragment fragment-photo"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-linklog-image="2" alt="" /><span>Coffee Chat</span></article>
+            <article class="paper-fragment fragment-name"><small>活动认识</small><strong>林屿</strong></article>
+            <article class="paper-fragment fragment-chat">聊过产品冷启动</article>
+            <article class="paper-fragment fragment-name"><small>朋友介绍</small><strong>苏禾</strong></article>
+            <article class="paper-fragment fragment-note">下一次为什么联系？</article>
+            <article class="paper-fragment fragment-name"><small>群里认识</small><strong>周宁</strong></article>
+          </div>
+          <div class="overload-copy"><p>LINKLOG · RELATIONSHIP NOTEBOOK</p><h1 class="overload-question" aria-label="认识了很多人，然后呢？">认识了很多人，<br />然后呢？</h1><span>47 秒，看一段相遇如何继续生长。</span></div>
+        </section>
+      </main>
+
+      <footer class="safety-note">静态原型 · 使用脱敏演示数据 · 不连接真实微信、通讯录或 AI 服务</footer>
+    </div>
+    <script>const demoData = {
+  user: { name: "小满" },
+  personalCoordinates: {
+    currentGoal: "验证真实需求",
+    longTheme: "增长与连接",
+    boundary: "长期共创",
+  },
+  signal: {
+    name: "林屿",
+    source: "AI Builder Coffee Chat",
+    note: "正在寻找第一批真实用户；关注产品冷启动；我们聊了活动后的关系沉淀。",
+    facts: ["正在寻找第一批真实用户", "关注产品冷启动", "讨论活动后的关系沉淀"],
+  },
+  profile: {
+    person: "林屿",
+    role: "AI 产品 Builder",
+    before: { goal: "完善产品", relationship: "刚认识", action: "继续观察" },
+    after: { goal: "验证第一批真实用户", relationship: "值得继续了解", action: "分享案例并跟进" },
+    evidence: "来自 AI Builder Coffee Chat 的原始备注，由用户确认后写入。",
+  },
+  evidenceEffects: [
+    { kind: "confirm", label: "确认", text: "产品冷启动是真问题" },
+    { kind: "correct", label: "修正", text: "先找真实用户，不再继续堆功能" },
+    { kind: "add", label: "新增", text: "林屿可能成为长期共创者" },
+  ],
+  profileMoments: {
+    history: "Coffee Chat · 讨论第一批真实用户",
+    reflection: "你擅长把复杂问题变成可验证的小步骤。",
+    next: "一起验证 2 位真实使用者",
+  },
+  selfUpdate: {
+    before: "带着问题去相遇",
+    after: "先验证真实需求",
+    evidence: ["确认：我能把交流变成行动", "修正：先验证，不等完整", "新增：连接产品与社群"],
+    nextEvidence: "完成 2 次用户访谈，确认付费边界",
+  },
+  connection: {
+    people: [
+      { name: "林屿", role: "AI 产品 Builder", contribution: "产品与技术原型" },
+      { name: "苏禾", role: "社群产品运营", contribution: "社群运营与用户反馈" },
+    ],
+    sharedTheme: "活动后的关系沉淀",
+    unresolved: "双方是否愿意认识",
+  },
+  map: {
+    selectedNodeId: "connection-linyu-suhe",
+    nodes: [
+      {
+        id: "person-linyu",
+        type: "person",
+        label: "林屿",
+        x: 0.49,
+        y: 0.51,
+        detail: {
+          eyebrow: "人物档案",
+          title: "林屿",
+          summary: "AI 产品 Builder，正在验证第一批真实用户。",
+          facts: ["来源：AI Builder Coffee Chat", "关系阶段：值得继续了解"],
+        },
+      },
+      {
+        id: "person-suhe",
+        type: "person",
+        label: "苏禾",
+        x: 0.79,
+        y: 0.54,
+        detail: {
+          eyebrow: "潜在连接",
+          title: "苏禾",
+          summary: "社群产品运营，能够提供真实用户反馈。",
+          facts: ["资源：社群运营", "需要：可验证的新工具"],
+        },
+      },
+      {
+        id: "evidence-coffee-chat",
+        type: "evidence",
+        label: "Coffee Chat",
+        x: 0.18,
+        y: 0.27,
+        detail: {
+          eyebrow: "原始证据",
+          title: "AI Builder Coffee Chat",
+          summary: "本次人物更新的原始关系事件。",
+          facts: ["聊到产品冷启动", "聊到活动后的关系沉淀"],
+        },
+      },
+      {
+        id: "theme-relationship",
+        type: "theme",
+        label: "关系沉淀",
+        x: 0.72,
+        y: 0.23,
+        detail: {
+          eyebrow: "共同主题",
+          title: "活动后的关系沉淀",
+          summary: "两人都在探索活动连接如何形成长期价值。",
+          facts: ["林屿：产品与技术原型", "苏禾：社群运营与反馈"],
+        },
+      },
+      {
+        id: "theme-cold-start",
+        type: "theme",
+        label: "产品冷启动",
+        x: 0.22,
+        y: 0.72,
+        detail: {
+          eyebrow: "当前主题",
+          title: "产品冷启动",
+          summary: "林屿正在寻找第一批真实用户。",
+          facts: ["需要真实场景", "需要可反馈的早期用户"],
+        },
+      },
+      {
+        id: "resource-complement",
+        type: "evidence",
+        label: "能力互补",
+        x: 0.67,
+        y: 0.76,
+        detail: {
+          eyebrow: "可核对依据",
+          title: "产品原型 × 社群验证",
+          summary: "双方能力互补，但尚未确认合作意愿。",
+          facts: ["林屿：产品与技术原型", "苏禾：社群验证与反馈"],
+        },
+      },
+      {
+        id: "connection-linyu-suhe",
+        type: "pending",
+        label: "林屿 × 苏禾",
+        x: 0.88,
+        y: 0.78,
+        detail: {
+          eyebrow: "待确认连接",
+          title: "林屿 × 苏禾",
+          summary: "建议先分别询问双方，再决定是否介绍。",
+          facts: ["共同主题：关系沉淀", "尚未确认：双方是否愿意认识"],
+        },
+      },
+    ],
+    edges: [
+      { id: "edge-chat-linyu", source: "evidence-coffee-chat", target: "person-linyu", status: "confirmed", label: "本次交流" },
+      { id: "edge-linyu-theme", source: "person-linyu", target: "theme-relationship", status: "theme", label: "共同关注" },
+      { id: "edge-linyu-cold-start", source: "person-linyu", target: "theme-cold-start", status: "confirmed", label: "当前阶段" },
+      { id: "edge-linyu-complement", source: "person-linyu", target: "resource-complement", status: "confirmed", label: "可以提供" },
+      { id: "edge-suhe-theme", source: "person-suhe", target: "theme-relationship", status: "theme", label: "共同关注" },
+      { id: "edge-suhe-complement", source: "person-suhe", target: "resource-complement", status: "confirmed", label: "可以提供" },
+      { id: "edge-linyu-pending", source: "person-linyu", target: "connection-linyu-suhe", status: "pending", label: "待确认" },
+      { id: "edge-suhe-pending", source: "person-suhe", target: "connection-linyu-suhe", status: "pending", label: "待确认" },
+    ],
+  },
+  action: {
+    id: "share-growth-signal-case",
+    title: "分享一页 Growth Signal 案例",
+    reason: "延续 Coffee Chat 中的用户验证话题",
+    status: "pending",
+  },
+  message:
+    "上次聊到活动后的关系沉淀，我整理了一页 Growth Signal 案例，想到你正在验证第一批用户，或许可以给你一些参考。",
+};
+
+
+function projectNode(node, width, height, inset = 36) {
+  return {
+    x: inset + node.x * (width - inset * 2),
+    y: inset + node.y * (height - inset * 2),
+  };
+}
+
+function getMapNode(map, nodeId) {
+  return map.nodes.find((node) => node.id === nodeId)
+    ?? map.nodes.find((node) => node.id === map.selectedNodeId);
+}
+
+function buildEdgeSegments(map, width, height, inset = 36) {
+  const nodes = new Map(map.nodes.map((node) => [node.id, node]));
+  return map.edges.flatMap((edge) => {
+    const source = nodes.get(edge.source);
+    const target = nodes.get(edge.target);
+    if (!source || !target) return [];
+    return [{ ...edge, from: projectNode(source, width, height, inset), to: projectNode(target, width, height, inset) }];
+  });
+}
+
+const EDGE_COLORS = {
+  confirmed: "#78998a",
+  theme: "#c49a48",
+  pending: "#c87558",
+};
+
+const PERSON_PORTRAITS = {
+  "person-linyu": "./assets/people/linyu-portrait.jpg",
+  "person-suhe": "./assets/people/suhe-portrait.jpg",
+};
+
+function clampDrawProgress(value) {
+  return Math.max(0, Math.min(1, Number(value) || 0));
+}
+
+function drawRelationshipEdges(canvas, map, progress = 1) {
+  if (!canvas) return;
+  const rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+  const ratio = window.devicePixelRatio || 1;
+  canvas.width = Math.round(rect.width * ratio);
+  canvas.height = Math.round(rect.height * ratio);
+  const context = canvas.getContext("2d");
+  if (!context) return;
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  context.clearRect(0, 0, rect.width, rect.height);
+  const segments = buildEdgeSegments(map, rect.width, rect.height);
+  const overallProgress = clampDrawProgress(progress);
+  for (const [index, segment] of segments.entries()) {
+    const localProgress = clampDrawProgress(overallProgress * segments.length - index);
+    if (localProgress === 0) continue;
+    const targetX = segment.from.x + (segment.to.x - segment.from.x) * localProgress;
+    const targetY = segment.from.y + (segment.to.y - segment.from.y) * localProgress;
+    context.beginPath();
+    context.strokeStyle = EDGE_COLORS[segment.status] ?? EDGE_COLORS.confirmed;
+    context.lineWidth = segment.status === "pending" ? 1.5 : 1.25;
+    context.setLineDash(segment.status === "pending" ? [5, 5] : []);
+    context.moveTo(segment.from.x, segment.from.y);
+    context.lineTo(targetX, targetY);
+    context.stroke();
+  }
+}
+
+function createMapNodeButton(node, selectedNodeId, onSelect) {
+  const button = document.createElement("button");
+  const eyebrow = document.createElement("small");
+  const label = document.createElement("strong");
+  const portrait = PERSON_PORTRAITS[node.id] ? document.createElement("img") : null;
+  button.type = "button";
+  button.className = `map-node map-node-${node.type}`;
+  button.dataset.mapNodeId = node.id;
+  button.setAttribute("aria-label", `${node.detail.eyebrow}：${node.label}`);
+  button.setAttribute("aria-pressed", String(node.id === selectedNodeId));
+  button.style.setProperty("--map-x", node.x);
+  button.style.setProperty("--map-y", node.y);
+  eyebrow.textContent = node.detail.eyebrow;
+  label.textContent = node.label;
+  if (portrait) {
+    portrait.src = PERSON_PORTRAITS[node.id];
+    portrait.alt = `${node.label}的脱敏演示肖像`;
+    button.append(portrait, label, eyebrow);
+  } else {
+    button.append(eyebrow, label);
+  }
+  button.addEventListener("click", () => onSelect(node.id));
+  return button;
+}
+
+function mountRelationshipMap({ root, map, selectedNodeId, onSelect }) {
+  const canvas = root.querySelector("[data-map-canvas]");
+  const layer = root.querySelector("[data-map-nodes]");
+  layer.replaceChildren(...map.nodes.map((node) => createMapNodeButton(node, selectedNodeId, onSelect)));
+
+  let drawProgress = 1;
+  const redraw = () => drawRelationshipEdges(canvas, map, drawProgress);
+  redraw();
+
+  let observer;
+  if (typeof ResizeObserver === "function") {
+    observer = new ResizeObserver(redraw);
+    observer.observe(root);
+  } else {
+    window.addEventListener("resize", redraw);
+  }
+
+  return {
+    update(nextSelectedId) {
+      layer.querySelectorAll("[data-map-node-id]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.mapNodeId === nextSelectedId));
+      });
+    },
+    setProgress(value) {
+      drawProgress = clampDrawProgress(value);
+      redraw();
+    },
+    redraw,
+    destroy() {
+      observer?.disconnect();
+      if (!observer) window.removeEventListener("resize", redraw);
+    },
+  };
+}
+
+
+const AUTO_DEMO_DURATION_MS = 27_000;
+
+const AUTO_DEMO_EVENTS = [
+  { id: "self-start-enter", at: 0, type: "chapter", step: "self-start", phase: "self-start-enter" },
+  { id: "capture-enter", at: 3_000, type: "chapter", step: "capture", phase: "capture-enter" },
+  { id: "capture-fill", at: 4_000, type: "phase", phase: "capture-fill" },
+  { id: "capture-save", at: 6_000, type: "action", action: "save-signal", phase: "capture-save" },
+  { id: "profile-enter", at: 7_000, type: "chapter", step: "profile", phase: "profile-enter" },
+  { id: "evidence-effects", at: 8_000, type: "phase", phase: "evidence-effects" },
+  { id: "profile-confirm", at: 10_000, type: "action", action: "confirm-profile", phase: "profile-confirm" },
+  { id: "connection-enter", at: 11_000, type: "chapter", step: "connection", phase: "connection-enter" },
+  { id: "map-growth", at: 12_000, type: "phase", phase: "map-growth" },
+  { id: "connection-ask", at: 16_000, type: "action", action: "ask-both", phase: "connection-ask" },
+  { id: "action-enter", at: 17_000, type: "chapter", step: "action", phase: "action-enter" },
+  { id: "action-complete", at: 20_000, type: "action", action: "complete-action", phase: "action-complete" },
+  { id: "self-return-enter", at: 21_000, type: "chapter", step: "self-return", phase: "self-return-enter" },
+  { id: "self-confirm", at: 24_000, type: "action", action: "confirm-self", phase: "self-confirm" },
+  { id: "closing", at: 25_000, type: "closing", phase: "closing" },
+  { id: "finish", at: 27_000, type: "finish", phase: "finished" },
+];
+
+function clampElapsed(value) {
+  return Math.max(0, Math.min(AUTO_DEMO_DURATION_MS, Number(value) || 0));
+}
+
+function getDueEvents(previousElapsed, currentElapsed) {
+  const from = clampElapsed(previousElapsed);
+  const to = clampElapsed(currentElapsed);
+  return AUTO_DEMO_EVENTS.filter((event) => event.at > from && event.at <= to);
+}
+
+function getProgressLabel(elapsed) {
+  const seconds = Math.floor(clampElapsed(elapsed) / 1000);
+  const total = Math.floor(AUTO_DEMO_DURATION_MS / 1000);
+  return `00:${String(seconds).padStart(2, "0")} / 00:${String(total).padStart(2, "0")}`;
+}
+
+function getEventAtStart() {
+  return AUTO_DEMO_EVENTS.find((event) => event.at === 0);
+}
+
+
+const STEPS = ["self-start", "capture", "profile", "connection", "action", "self-return"];
+
+const AUTO_SEQUENCE = [
+  { step: "self-start", duration: 3000 },
+  { step: "capture", duration: 4000 },
+  { step: "profile", duration: 4000 },
+  { step: "connection", duration: 6000 },
+  { step: "action", duration: 4000 },
+  { step: "self-return", duration: 4000 },
+];
+
+function normalizeStep(step) {
+  return STEPS.includes(step) ? step : STEPS[0];
+}
+
+function nextStep(step) {
+  const index = STEPS.indexOf(normalizeStep(step));
+  return STEPS[Math.min(index + 1, STEPS.length - 1)];
+}
+
+function previousStep(step) {
+  const index = STEPS.indexOf(normalizeStep(step));
+  return STEPS[Math.max(index - 1, 0)];
+}
+
+function validateSignal(signal) {
+  const value = {
+    name: String(signal?.name ?? "").trim(),
+    note: String(signal?.note ?? "").trim(),
+  };
+  const errors = {};
+  if (!value.name) errors.name = "请填写对方的称呼";
+  if (!value.note) errors.note = "至少留下一条可确认事实";
+  return { valid: Object.keys(errors).length === 0, value, errors };
+}
+
+function buildProfileDelta(profile, signal) {
+  return {
+    before: { ...profile.before },
+    after: { ...profile.after },
+    evidence: `来自 ${signal.source}：${signal.note}`,
+  };
+}
+
+function validateRelationshipMap(map) {
+  const errors = [];
+  const nodes = Array.isArray(map?.nodes) ? map.nodes : [];
+  const edges = Array.isArray(map?.edges) ? map.edges : [];
+  const nodeIds = new Set();
+  for (const node of nodes) {
+    if (!node?.id || nodeIds.has(node.id)) errors.push(`invalid node: ${node?.id ?? "missing"}`);
+    else nodeIds.add(node.id);
+  }
+  for (const edge of edges) {
+    if (!nodeIds.has(edge.source) || !nodeIds.has(edge.target)) errors.push(`invalid edge: ${edge.id}`);
+  }
+  return { valid: errors.length === 0, errors };
+}
+
+function normalizeMapNodeId(map, nodeId) {
+  const ids = new Set(map.nodes.map((node) => node.id));
+  return ids.has(nodeId) ? nodeId : map.selectedNodeId;
+}
+
+function selectMapNode(state, map, nodeId) {
+  return { ...state, selectedMapNodeId: normalizeMapNodeId(map, nodeId) };
+}
+
+function createInitialState(data) {
+  return {
+    step: "self-start",
+    signal: { ...data.signal, facts: [...data.signal.facts] },
+    profileDelta: buildProfileDelta(data.profile, data.signal),
+    profileDecision: "pending",
+    connectionDecision: "pending",
+    personalCoordinates: { ...data.personalCoordinates },
+    evidenceEffects: data.evidenceEffects.map((item) => ({ ...item })),
+    profileMoments: { ...data.profileMoments },
+    selfUpdate: { ...data.selfUpdate, evidence: [...data.selfUpdate.evidence] },
+    selfUpdateDecision: "pending",
+    selectedMapNodeId: normalizeMapNodeId(data.map, data.map.selectedNodeId),
+    actions: [{ ...data.action }],
+    autoPlaying: false,
+    presentation: {
+      mode: "manual",
+      phase: "idle",
+      closing: false,
+    },
+  };
+}
+
+function resetPresentation(state) {
+  return {
+    ...state,
+    presentation: {
+      mode: "manual",
+      phase: "idle",
+      closing: false,
+    },
+  };
+}
+
+function getAssetSummary(state) {
+  return {
+    profiles: state.profileDecision === "confirmed" ? 1 : 0,
+    suggestions: state.connectionDecision === "ask_both" ? 1 : 0,
+    completedActions: state.actions.filter((action) => action.status === "completed").length,
+  };
+}
+
+function decideProfile(state, decision) {
+  return { ...state, profileDecision: decision === "confirm" ? "confirmed" : "held" };
+}
+
+function decideConnection(state, decision) {
+  return { ...state, connectionDecision: decision === "ask" ? "ask_both" : "ignored" };
+}
+
+function decideSelfUpdate(state, decision) {
+  return { ...state, selfUpdateDecision: decision === "confirm" ? "confirmed" : "held" };
+}
+
+function toggleAction(state, actionId) {
+  return {
+    ...state,
+    actions: state.actions.map((action) =>
+      action.id === actionId
+        ? { ...action, status: action.status === "completed" ? "pending" : "completed" }
+        : action,
+    ),
+  };
+}
+
+function goToStep(state, step) {
+  return { ...state, step: normalizeStep(step) };
+}
+
+
+
+
+
+
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+
+let state = createInitialState(demoData);
+let relationshipMapView;
+let autoFrame = 0;
+let autoStartedAt = 0;
+let autoElapsed = 0;
+let autoPreviousElapsed = -1;
+let autoPaused = false;
+
+function clearAutoFrame() {
+  if (autoFrame) window.cancelAnimationFrame(autoFrame);
+  autoFrame = 0;
+}
+
+function stopAutoDemo({ preserveProgress = false } = {}) {
+  clearAutoFrame();
+  autoPaused = false;
+  if (!preserveProgress) {
+    autoElapsed = 0;
+    autoPreviousElapsed = -1;
+  }
+  state = resetPresentation({ ...state, autoPlaying: false });
+  relationshipMapView?.setProgress(1);
+  renderPresentation();
+}
+
+function renderDelta() {
+  const { before, after, evidence } = state.profileDelta;
+  $("[data-before-goal]").textContent = before.goal;
+  $("[data-before-relationship]").textContent = before.relationship;
+  $("[data-before-action]").textContent = before.action;
+  $("[data-after-goal]").textContent = after.goal;
+  $("[data-after-relationship]").textContent = after.relationship;
+  $("[data-after-action]").textContent = after.action;
+  $("[data-profile-evidence]").textContent = evidence;
+}
+
+function renderStoryContext() {
+  const coordinates = state.personalCoordinates;
+  $("[data-coordinate-goal]").textContent = coordinates.currentGoal;
+  $("[data-coordinate-theme]").textContent = coordinates.longTheme;
+  $("[data-coordinate-boundary]").textContent = coordinates.boundary;
+  $$('[data-evidence-effect]').forEach((node, index) => {
+    const effect = state.evidenceEffects[index];
+    node.dataset.kind = effect.kind;
+    $("strong", node).textContent = effect.label;
+    $("span", node).textContent = effect.text;
+  });
+  $("[data-profile-history]").textContent = state.profileMoments.history;
+  $("[data-profile-reflection]").textContent = state.profileMoments.reflection;
+  $("[data-profile-next]").textContent = state.profileMoments.next;
+}
+
+function renderSelfUpdate() {
+  $("[data-self-before]").textContent = state.selfUpdate.before;
+  $("[data-self-after]").textContent = state.selfUpdate.after;
+  $("[data-self-next]").textContent = state.selfUpdate.nextEvidence;
+  $$('[data-self-evidence] span').forEach((node, index) => {
+    node.textContent = state.selfUpdate.evidence[index];
+  });
+  const status = $("[data-self-update-status]");
+  status.textContent = state.selfUpdateDecision === "confirmed"
+    ? "已由我确认：先验证真实需求。"
+    : state.selfUpdateDecision === "held"
+      ? "暂不更新，证据仍被保留。"
+      : "证据提出建议，但不替我下结论。";
+  status.dataset.status = state.selfUpdateDecision;
+}
+
+function renderMapDetail() {
+  const node = getMapNode(demoData.map, state.selectedMapNodeId);
+  $("[data-map-eyebrow]").textContent = node.detail.eyebrow;
+  $("[data-map-title]").textContent = node.detail.title;
+  $("[data-map-summary]").textContent = node.detail.summary;
+  const facts = $("[data-map-facts]");
+  facts.replaceChildren(...node.detail.facts.map((fact) => {
+    const item = document.createElement("li");
+    item.textContent = fact;
+    return item;
+  }));
+  $("[data-map-why]").textContent = node.detail.facts[0] ?? node.detail.summary;
+  $("[data-map-unknown]").textContent = node.detail.facts[1] ?? "暂无新的未确认项";
+  $("[data-map-next]").textContent = node.type === "pending" ? "先分别询问双方。" : "继续查看关联证据。";
+  const isPending = node.type === "pending";
+  $("[data-map-decision-actions]").hidden = !isPending;
+  $("[data-connection-status]").hidden = !isPending;
+  relationshipMapView?.update(node.id);
+  if (state.step === "connection") relationshipMapView?.redraw();
+}
+
+function renderDecisions() {
+  const profileStatus = $("[data-profile-status]");
+  profileStatus.textContent =
+    state.profileDecision === "confirmed"
+      ? "已确认：人物档案将写入这次变化"
+      : state.profileDecision === "held"
+        ? "已保留原档案：本次事实仍在时间线中"
+        : "等待你的决定";
+  profileStatus.dataset.status = state.profileDecision;
+
+  const connectionStatus = $("[data-connection-status]");
+  connectionStatus.textContent =
+    state.connectionDecision === "ask_both"
+      ? "已创建两个询问任务，不会自动牵线"
+      : state.connectionDecision === "ignored"
+        ? "已忽略：不会创建任何连接任务"
+        : "等待你的决定";
+  connectionStatus.dataset.status = state.connectionDecision;
+
+  $("[data-connection-result]").textContent =
+    state.connectionDecision === "ask_both"
+      ? "先分别询问双方，确认后再决定是否介绍。"
+      : state.connectionDecision === "ignored"
+        ? "这次建议已忽略，不会继续推进。"
+        : "等待双方确认是否愿意认识。";
+}
+
+function renderAction() {
+  const action = state.actions[0];
+  const completed = action.status === "completed";
+  const card = $("[data-action-card]");
+  const button = $("[data-complete-action]");
+  card.classList.toggle("is-completed", completed);
+  button.setAttribute("aria-pressed", String(completed));
+  button.textContent = completed ? "已完成 · 撤销" : "标记完成";
+  const summary = getAssetSummary(state);
+  $("[data-asset-profiles]").textContent = summary.profiles;
+  $("[data-asset-suggestions]").textContent = summary.suggestions;
+  $("[data-asset-actions]").textContent = summary.completedActions;
+  $("[data-action-line]").textContent = completed
+    ? "这次相遇，已经有了下一步。"
+    : "完成一次跟进，让关系继续生长。";
+}
+
+function renderPresentation() {
+  const phase = state.presentation?.phase ?? "idle";
+  document.documentElement.setAttribute("data-demo-phase", phase);
+  document.documentElement.setAttribute("data-demo-mode", state.presentation?.mode ?? "manual");
+  const intro = $("[data-intro-scene]");
+  const finalCaption = $("[data-final-caption]");
+  const showIntro = state.presentation?.mode === "auto" && ["overload-enter", "overload-question"].includes(phase);
+  const showClosing = ["self-confirm", "closing", "finished"].includes(phase);
+  intro.hidden = !showIntro;
+  intro.setAttribute("aria-hidden", String(!showIntro));
+  finalCaption.setAttribute("aria-hidden", String(!showClosing));
+
+  const button = $("[data-auto]");
+  const label = $("[data-auto-state]");
+  const progress = $("[data-auto-progress]");
+  const isRunning = state.autoPlaying && !autoPaused;
+  button.classList.toggle("is-playing", isRunning);
+  button.setAttribute("aria-pressed", String(isRunning));
+  label.textContent = autoPaused
+    ? "继续演示"
+    : isRunning
+      ? "暂停演示"
+      : showClosing
+        ? "重新演示"
+        : "自动演示";
+  progress.textContent = getProgressLabel(autoElapsed);
+}
+
+function renderStep() {
+  document.documentElement.dataset.step = state.step;
+  $$('[data-screen]').forEach((screen) => {
+    const active = screen.dataset.screen === state.step;
+    screen.hidden = !active;
+    screen.classList.toggle("is-active", active);
+    screen.setAttribute("aria-hidden", String(!active));
+  });
+  $$('[data-step-target]').forEach((button) => {
+    const active = button.dataset.stepTarget === state.step;
+    if (active) button.setAttribute("aria-current", "step");
+    else button.removeAttribute("aria-current");
+  });
+  $("[data-prev]").disabled = state.step === STEPS[0];
+  $("[data-next]").disabled = state.step === STEPS.at(-1);
+}
+
+function render() {
+  renderDelta();
+  renderStoryContext();
+  renderSelfUpdate();
+  renderDecisions();
+  renderAction();
+  renderStep();
+  renderMapDetail();
+  renderPresentation();
+}
+
+function navigate(step, { manual = true } = {}) {
+  if (manual && state.autoPlaying) stopAutoDemo();
+  state = goToStep(state, step);
+  render();
+}
+
+function clearFormErrors() {
+  $$('[data-error]').forEach((node) => (node.textContent = ""));
+}
+
+function saveSignal({ advance = true } = {}) {
+  clearFormErrors();
+  const source = $('input[name="source"]:checked')?.value ?? demoData.signal.source;
+  const result = validateSignal({
+    name: $("#person-name").value,
+    note: $("#connection-note").value,
+  });
+  if (!result.valid) {
+    Object.entries(result.errors).forEach(([key, message]) => {
+      $(`[data-error="${key}"]`).textContent = message;
+    });
+    $("[data-capture-status]").textContent = "请先补全必要信息";
+    return false;
+  }
+  const signal = {
+    ...state.signal,
+    ...result.value,
+    source,
+    facts: result.value.note.split(/[；;。]/).map((fact) => fact.trim()).filter(Boolean),
+  };
+  state = {
+    ...state,
+    signal,
+    profileDelta: buildProfileDelta(demoData.profile, signal),
+  };
+  $("[data-capture-status]").textContent = `已保存 ${signal.facts.length} 条事实，1 条需要确认`;
+  renderDelta();
+  if (advance) window.setTimeout(() => navigate("profile"), 420);
+  return true;
+}
+
+function profileDecision(decision, { advance = true } = {}) {
+  state = decideProfile(state, decision);
+  renderDecisions();
+  if (advance) window.setTimeout(() => navigate("connection"), 380);
+}
+
+function connectionDecision(decision, { advance = true } = {}) {
+  state = decideConnection(state, decision);
+  renderDecisions();
+  if (advance) window.setTimeout(() => navigate("action"), 380);
+}
+
+function selfUpdateDecision(decision) {
+  state = decideSelfUpdate(state, decision);
+  renderSelfUpdate();
+}
+
+async function copyMessage() {
+  const message = $("[data-message-text]").textContent.trim();
+  const status = $("[data-copy-status]");
+  try {
+    await navigator.clipboard.writeText(message);
+    status.textContent = "已复制，可直接发送前再编辑";
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents($("[data-message-text]"));
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    status.textContent = "已选中话术，请手动复制";
+  }
+}
+
+function resetDemo() {
+  clearAutoFrame();
+  autoPaused = false;
+  autoElapsed = 0;
+  autoPreviousElapsed = -1;
+  state = createInitialState(demoData);
+  $("#person-name").value = demoData.signal.name;
+  $("#connection-note").value = demoData.signal.note;
+  $("[data-capture-status]").textContent = "";
+  $("[data-copy-status]").textContent = "";
+  clearFormErrors();
+  render();
+  relationshipMapView?.setProgress(1);
+}
+
+function setPresentationPhase(phase, { closing = false } = {}) {
+  state = {
+    ...state,
+    presentation: {
+      mode: "auto",
+      phase,
+      closing,
+    },
+  };
+  renderPresentation();
+}
+
+function applyAutoEvent(event) {
+  if (event.type === "intro") {
+    navigate("capture", { manual: false });
+    setPresentationPhase(event.phase);
+    return;
+  }
+  if (event.type === "chapter") {
+    navigate(event.step, { manual: false });
+    setPresentationPhase(event.phase);
+    if (event.step === "connection") relationshipMapView?.setProgress(0);
+    return;
+  }
+  if (event.type === "phase") {
+    if (event.phase === "evidence-organize") navigate("profile", { manual: false });
+    setPresentationPhase(event.phase);
+    return;
+  }
+  if (event.type === "action") {
+    if (event.action === "save-signal") saveSignal({ advance: false });
+    if (event.action === "confirm-profile") profileDecision("confirm", { advance: false });
+    if (event.action === "ask-both") {
+      state = selectMapNode(state, demoData.map, "connection-linyu-suhe");
+      connectionDecision("ask", { advance: false });
+      renderMapDetail();
+    }
+    if (event.action === "complete-action" && state.actions[0].status !== "completed") {
+      state = toggleAction(state, demoData.action.id);
+      renderAction();
+    }
+    if (event.action === "confirm-self") {
+      state = decideSelfUpdate(state, "confirm");
+      renderSelfUpdate();
+    }
+    setPresentationPhase(event.phase, { closing: event.action === "confirm-self" });
+    return;
+  }
+  if (event.type === "closing") {
+    setPresentationPhase(event.phase, { closing: true });
+    return;
+  }
+  if (event.type === "finish") {
+    clearAutoFrame();
+    state = { ...state, autoPlaying: false };
+    autoElapsed = AUTO_DEMO_DURATION_MS;
+    setPresentationPhase("finished", { closing: true });
+  }
+}
+
+function updateMapPlayback(elapsed) {
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  if (reducedMotion) {
+    relationshipMapView?.setProgress(1);
+    return;
+  }
+  if (elapsed < 11_000) return;
+  relationshipMapView?.setProgress((elapsed - 11_000) / 5_000);
+}
+
+function runAutoFrame() {
+  if (!state.autoPlaying || autoPaused) return;
+  const nextElapsed = clampElapsed(performance.now() - autoStartedAt);
+  for (const event of getDueEvents(autoPreviousElapsed, nextElapsed)) applyAutoEvent(event);
+  autoPreviousElapsed = nextElapsed;
+  autoElapsed = nextElapsed;
+  updateMapPlayback(nextElapsed);
+  renderPresentation();
+  if (nextElapsed < AUTO_DEMO_DURATION_MS && state.autoPlaying) {
+    autoFrame = window.requestAnimationFrame(runAutoFrame);
+  }
+}
+
+function pauseAutoDemo() {
+  if (!state.autoPlaying || autoPaused) return;
+  clearAutoFrame();
+  autoPaused = true;
+  renderPresentation();
+}
+
+function resumeAutoDemo() {
+  if (!state.autoPlaying || !autoPaused) return;
+  autoPaused = false;
+  autoStartedAt = performance.now() - autoElapsed;
+  renderPresentation();
+  autoFrame = window.requestAnimationFrame(runAutoFrame);
+}
+
+function startAutoDemo() {
+  if (state.autoPlaying && !autoPaused) {
+    pauseAutoDemo();
+    return;
+  }
+  if (state.autoPlaying && autoPaused) {
+    resumeAutoDemo();
+    return;
+  }
+  resetDemo();
+  state = {
+    ...state,
+    autoPlaying: true,
+    presentation: { mode: "auto", phase: "intro", closing: false },
+  };
+  autoStartedAt = performance.now();
+  autoElapsed = 0;
+  autoPreviousElapsed = -1;
+  applyAutoEvent(getEventAtStart());
+  renderPresentation();
+  autoFrame = window.requestAnimationFrame(runAutoFrame);
+}
+
+function scheduleAutoStart() {
+  window.requestAnimationFrame(() => startAutoDemo());
+}
+
+$(".capture-form").addEventListener("submit", (event) => {
+  event.preventDefault();
+  saveSignal();
+});
+$("[data-prev]").addEventListener("click", () => navigate(previousStep(state.step)));
+$("[data-next]").addEventListener("click", () => navigate(nextStep(state.step)));
+$$('[data-step-target]').forEach((button) =>
+  button.addEventListener("click", () => navigate(button.dataset.stepTarget)),
+);
+$("[data-profile-confirm]").addEventListener("click", () => profileDecision("confirm"));
+$("[data-profile-hold]").addEventListener("click", () => profileDecision("hold"));
+$("[data-connection-ask]").addEventListener("click", () => connectionDecision("ask"));
+$("[data-connection-ignore]").addEventListener("click", () => connectionDecision("ignore"));
+$("[data-complete-action]").addEventListener("click", () => {
+  const wasCompleted = state.actions[0].status === "completed";
+  state = toggleAction(state, demoData.action.id);
+  renderAction();
+  if (!wasCompleted) window.setTimeout(() => navigate("self-return"), 320);
+});
+$('[data-self-start-next]').addEventListener("click", () => navigate("capture"));
+$("[data-self-update-confirm]").addEventListener("click", () => selfUpdateDecision("confirm"));
+$("[data-self-update-hold]").addEventListener("click", () => selfUpdateDecision("hold"));
+$("[data-copy-message]").addEventListener("click", copyMessage);
+$("[data-restart-closing]").addEventListener("click", startAutoDemo);
+$("[data-auto]").addEventListener("click", startAutoDemo);
+
+relationshipMapView = mountRelationshipMap({
+  root: $("[data-relationship-map]"),
+  map: demoData.map,
+  selectedNodeId: state.selectedMapNodeId,
+  onSelect(nodeId) {
+    if (state.autoPlaying) stopAutoDemo();
+    state = selectMapNode(state, demoData.map, nodeId);
+    renderMapDetail();
+  },
+});
+
+render();
+scheduleAutoStart();
+</script>
+  
+  <script src="assets/image-01.js"></script>
+  <script src="assets/image-02.js"></script>
+  <script src="assets/image-03.js"></script>
+  <script src="assets/image-04.js"></script>
+  <script src="assets/image-05.js"></script>
+  <script>
+    document.querySelectorAll("[data-linklog-image]").forEach((image) => {
+      const source = window.LINKLOG_IMAGES?.[image.dataset.linklogImage];
+      if (source) image.src = source;
+    });
+  </script>
+</body>
+</html>
